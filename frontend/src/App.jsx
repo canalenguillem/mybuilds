@@ -3,6 +3,11 @@ import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import LoginPage from './pages/LoginPage'
 import Dashboard from './pages/Dashboard'
+import Placeholder from './pages/Placeholder'
+import TemplatesPage from './pages/Templates/TemplatesPage'
+import TemplateBuilder from './pages/Templates/TemplateBuilder'
+
+const protect = (el) => <ProtectedRoute>{el}</ProtectedRoute>
 
 export default function App() {
   return (
@@ -10,14 +15,14 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/" element={protect(<Dashboard />)} />
+          <Route path="/templates" element={protect(<TemplatesPage />)} />
+          <Route path="/templates/new" element={protect(<TemplateBuilder />)} />
+          <Route path="/templates/:id/edit" element={protect(<TemplateBuilder />)} />
+          <Route path="/documents" element={protect(<Placeholder title="Documents" />)} />
+          <Route path="/submittals" element={protect(<Placeholder title="Submittals" />)} />
+          <Route path="/compliance" element={protect(<Placeholder title="Compliance" />)} />
+          <Route path="/analytics" element={protect(<Placeholder title="Analytics" />)} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

@@ -329,6 +329,113 @@ h1 {
   }
 }
 
+/* ── Page header ───────────────────────────────────────────── */
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* ── Table ─────────────────────────────────────────────────── */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.table thead th {
+  text-align: left;
+  padding: 12px 16px;
+  background: var(--subtle-surface);
+  border-bottom: 1px solid var(--border);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.table tbody td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-body);
+}
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+.table tbody tr:hover {
+  background: var(--primary-tint-2);
+}
+
+/* ── Template builder ──────────────────────────────────────── */
+.builder-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+  margin-top: 24px;
+  align-items: start;
+}
+.section-row {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: var(--subtle-surface);
+}
+.section-row:hover {
+  border-color: #d4dae1;
+}
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.drag-handle {
+  cursor: grab;
+  color: var(--text-faint);
+  font-size: 18px;
+  user-select: none;
+}
+.drag-handle:active {
+  cursor: grabbing;
+}
+.section-order {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--primary-tint);
+  color: var(--primary);
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.doc-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  padding-left: 44px;
+}
+.doc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-body);
+  background: #fff;
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .builder-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ── Spinner ───────────────────────────────────────────────── */
 .spinner {
   width: 16px;

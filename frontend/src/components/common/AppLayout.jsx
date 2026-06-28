@@ -1,15 +1,16 @@
+import { NavLink } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 
 const NAV = [
-  { label: 'Dashboard', active: true },
-  { label: 'Documents' },
-  { label: 'Templates' },
-  { label: 'Submittals' },
-  { label: 'Compliance' },
-  { label: 'Analytics' },
+  { label: 'Dashboard', to: '/' },
+  { label: 'Documents', to: '/documents' },
+  { label: 'Templates', to: '/templates' },
+  { label: 'Submittals', to: '/submittals' },
+  { label: 'Compliance', to: '/compliance' },
+  { label: 'Analytics', to: '/analytics' },
 ]
 
-export default function AppLayout({ children }) {
+export default function AppLayout({ title = 'Submittal Automation', children }) {
   const { user, logout } = useAuth()
   const initials = (user?.username || 'U').slice(0, 2).toUpperCase()
 
@@ -21,19 +22,22 @@ export default function AppLayout({ children }) {
           <span>myBuilds</span>
         </div>
         {NAV.map((item) => (
-          <div key={item.label} className={`nav-item${item.active ? ' active' : ''}`}>
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.to === '/'}
+            className={({ isActive }) => `nav-item${isActive ? ' active' : ''}`}
+          >
             {item.label}
-          </div>
+          </NavLink>
         ))}
       </aside>
 
       <div className="main">
         <header className="topbar">
-          <strong style={{ color: 'var(--text-primary)' }}>Submittal Automation</strong>
+          <strong style={{ color: 'var(--text-primary)' }}>{title}</strong>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>
-              {user?.email}
-            </span>
+            <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>{user?.email}</span>
             <div className="avatar">{initials}</div>
             <button className="btn btn-secondary" style={{ height: 34 }} onClick={logout}>
               Sign out

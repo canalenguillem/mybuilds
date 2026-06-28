@@ -456,6 +456,112 @@ h1 {
   transition: width 0.3s ease;
 }
 
+/* ── Modal ─────────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: grid;
+  place-items: center;
+  z-index: 100;
+  padding: 16px;
+}
+.modal-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-modal);
+  max-width: 100%;
+  max-height: 90vh;
+  overflow: auto;
+}
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-head strong {
+  color: var(--text-primary);
+  font-size: 16px;
+}
+.modal-body {
+  padding: 24px;
+}
+.icon-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 7px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 14px;
+}
+.icon-btn:hover {
+  background: var(--primary-tint);
+  color: var(--primary);
+}
+
+/* ── Toolbar / filters ─────────────────────────────────────── */
+.toolbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.view-toggle {
+  display: inline-flex;
+  border: 1px solid var(--input-border);
+  border-radius: 7px;
+  overflow: hidden;
+}
+.view-toggle button {
+  border: none;
+  background: #fff;
+  padding: 0 14px;
+  height: 40px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+}
+.view-toggle button.active {
+  background: var(--primary-tint);
+  color: var(--primary);
+}
+
+/* ── Dropzone ──────────────────────────────────────────────── */
+.dropzone {
+  border: 2px dashed var(--input-border);
+  border-radius: 10px;
+  padding: 28px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.dropzone:hover {
+  border-color: var(--primary);
+  background: var(--primary-tint-2);
+}
+
+/* ── Document grid ─────────────────────────────────────────── */
+.doc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.doc-card {
+  transition: box-shadow 0.15s ease;
+}
+.doc-card:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
 /* ── Tabs ──────────────────────────────────────────────────── */
 .tabs {
   display: flex;

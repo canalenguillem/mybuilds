@@ -20,8 +20,8 @@ export default function AppLayout({ title = 'Submittal Automation', children }) 
     <div className="app-layout">
       <aside className="sidebar">
         <div className="auth-brand" style={{ marginBottom: 16 }}>
-          <div className="auth-logo">mB</div>
-          <span>myBuilds</span>
+          <div className="auth-logo">SF</div>
+          <span>SubmitFlow</span>
         </div>
         {NAV.map((item) => (
           <NavLink

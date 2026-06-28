@@ -29,8 +29,8 @@ export default function LoginPage() {
     <div className="auth-shell">
       <div className="card auth-card">
         <div className="auth-brand">
-          <div className="auth-logo">mB</div>
-          <span>myBuilds</span>
+          <div className="auth-logo">SF</div>
+          <span>SubmitFlow</span>
         </div>
         <h2 className="auth-title">Welcome back</h2>
         <p className="auth-subtitle">Sign in to your submittal workspace</p>

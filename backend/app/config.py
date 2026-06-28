@@ -34,6 +34,8 @@ class Settings(BaseSettings):
 
     # AI / LLM
     openai_api_key: str = ""
+    openai_model: str = "gpt-4o-mini"
+    openai_timeout: int = 60
     anthropic_api_key: str = ""
     llm_model: str = "claude-opus-4-8"
 

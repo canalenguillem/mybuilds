@@ -7,6 +7,7 @@ import Placeholder from './pages/Placeholder'
 import TemplatesPage from './pages/Templates/TemplatesPage'
 import TemplateBuilder from './pages/Templates/TemplateBuilder'
 import SubmittalsPage from './pages/Submittals/SubmittalsPage'
+import CompliancePage from './pages/Compliance/CompliancePage'
 
 const protect = (el) => <ProtectedRoute>{el}</ProtectedRoute>
 
@@ -22,7 +23,7 @@ export default function App() {
           <Route path="/templates/:id/edit" element={protect(<TemplateBuilder />)} />
           <Route path="/documents" element={protect(<Placeholder title="Documents" />)} />
           <Route path="/submittals" element={protect(<SubmittalsPage />)} />
-          <Route path="/compliance" element={protect(<Placeholder title="Compliance" />)} />
+          <Route path="/compliance" element={protect(<CompliancePage />)} />
           <Route path="/analytics" element={protect(<Placeholder title="Analytics" />)} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

@@ -11,7 +11,7 @@ celery_app = Celery(
     "mybuilds",
     broker=settings.celery_broker_url,
     backend=settings.celery_result_backend,
-    include=["app.tasks.pdf_generation"],
+    include=["app.tasks.pdf_generation", "app.tasks.compliance_analysis"],
 )
 
 celery_app.conf.update(

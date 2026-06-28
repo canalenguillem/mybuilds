@@ -2,6 +2,7 @@
 from fastapi import APIRouter
 
 from app.api.v1 import (
+    analytics,
     auth,
     compliance,
     documents,
@@ -21,5 +22,4 @@ api_router.include_router(templates.router)
 api_router.include_router(submittals.router)
 api_router.include_router(compliance.router)
 api_router.include_router(settings.router)
-
-# Future routers (analytics) are registered here as they are implemented.
+api_router.include_router(analytics.router)

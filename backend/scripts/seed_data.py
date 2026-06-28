@@ -25,6 +25,25 @@ from app.database.models.users import (
     Role,
     User,
 )
+
+
+def _ensure_user(db, *, email, username, password, full_name, role_objs):
+    """Create the user if missing; returns (user, created)."""
+    from app.utils.security import hash_password as _hash
+
+    user = db.scalar(select(User).where(User.email == email))
+    if user:
+        return user, False
+    user = User(
+        email=email,
+        username=username,
+        password_hash=_hash(password),
+        full_name=full_name,
+        company="SubmitFlow",
+    )
+    user.roles = role_objs
+    db.add(user)
+    return user, True
 from app.utils.security import hash_password
 
 ROLE_DEFS = {
@@ -80,21 +99,27 @@ def seed() -> None:
             roles[name] = role
         db.flush()
 
-        # Admin user
-        admin = db.scalar(select(User).where(User.email == settings.seed_admin_email))
-        if not admin:
-            admin = User(
-                email=settings.seed_admin_email,
-                username=settings.seed_admin_username,
-                password_hash=hash_password(settings.seed_admin_password),
-                full_name="System Administrator",
-                company="myBuilds",
-            )
-            admin.roles = [roles[ROLE_ADMIN]]
-            db.add(admin)
-            print(f"Created admin user: {settings.seed_admin_email}")
-        else:
-            print(f"Admin user already exists: {settings.seed_admin_email}")
+        # Admin user (full access)
+        _, admin_created = _ensure_user(
+            db,
+            email=settings.seed_admin_email,
+            username=settings.seed_admin_username,
+            password=settings.seed_admin_password,
+            full_name="System Administrator",
+            role_objs=[roles[ROLE_ADMIN]],
+        )
+        print(("Created" if admin_created else "Exists") + f" admin: {settings.seed_admin_email}")
+
+        # Demo user (Operator + Reviewer — for sharing; cannot change settings/users)
+        _, demo_created = _ensure_user(
+            db,
+            email=settings.seed_demo_email,
+            username=settings.seed_demo_username,
+            password=settings.seed_demo_password,
+            full_name="Demo User",
+            role_objs=[roles[ROLE_OPERATOR], roles[ROLE_REVIEWER]],
+        )
+        print(("Created" if demo_created else "Exists") + f" demo: {settings.seed_demo_email}")
 
         db.commit()
         print("Seed complete: %d roles, %d permissions." % (len(roles), len(perms)))

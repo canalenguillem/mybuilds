@@ -50,10 +50,15 @@ class Settings(BaseSettings):
     documents_path: str = "/app/data/documents"
     generated_pdfs_path: str = "/app/data/generated_pdfs"
 
-    # Seed admin
+    # Seed admin (yours)
     seed_admin_email: str = "admin@mybuilds.com"
     seed_admin_username: str = "admin"
     seed_admin_password: str = "Admin123!"
+
+    # Seed demo user (Operator + Reviewer — for sharing/demo)
+    seed_demo_email: str = "demo@submitflow.com"
+    seed_demo_username: str = "demo"
+    seed_demo_password: str = "Demo1234!"
 
     @property
     def cors_origins_list(self) -> list[str]:

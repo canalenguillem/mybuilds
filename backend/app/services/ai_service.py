@@ -29,15 +29,15 @@ _STATEMENT_SYSTEM = (
 
 
 class AIService:
-    def __init__(self) -> None:
-        self.model = settings.openai_model
+    def __init__(self, api_key: str | None = None, model: str | None = None) -> None:
+        # Explicit args win (resolved from DB settings); fall back to env config.
+        api_key = api_key if api_key is not None else settings.openai_api_key
+        self.model = model or settings.openai_model
         self._client = None
-        if settings.openai_api_key:
+        if api_key:
             from openai import OpenAI
 
-            self._client = OpenAI(
-                api_key=settings.openai_api_key, timeout=settings.openai_timeout
-            )
+            self._client = OpenAI(api_key=api_key, timeout=settings.openai_timeout)
 
     @property
     def model_label(self) -> str:
@@ -46,6 +46,16 @@ class AIService:
     @property
     def enabled(self) -> bool:
         return self._client is not None
+
+    def test_connection(self) -> tuple[bool, str]:
+        """Validate the configured key without spending tokens (lists models)."""
+        if not self._client:
+            return False, "No OpenAI API key configured."
+        try:
+            self._client.models.list()
+            return True, f"Connected to OpenAI (model: {self.model})."
+        except Exception as exc:  # noqa: BLE001 — surface the provider message
+            return False, f"OpenAI connection failed: {exc}"
 
     # ── Public API ──────────────────────────────────────────────
     def extract_requirements(self, document_text: str) -> list[dict]:

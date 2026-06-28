@@ -456,6 +456,48 @@ h1 {
   transition: width 0.3s ease;
 }
 
+/* ── Tabs ──────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+}
+.tab {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+}
+.tab.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+/* ── Key-value rows ────────────────────────────────────────── */
+.kv {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.kv > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 14px;
+}
+.kv > div span {
+  color: var(--text-muted);
+}
+.kv > div b {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
 /* ── Spinner ───────────────────────────────────────────────── */
 .spinner {
   width: 16px;

@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 
 const NAV = [
@@ -12,6 +12,7 @@ const NAV = [
 
 export default function AppLayout({ title = 'Submittal Automation', children }) {
   const { user, logout } = useAuth()
+  const navigate = useNavigate()
   const initials = (user?.username || 'U').slice(0, 2).toUpperCase()
 
   return (
@@ -38,7 +39,14 @@ export default function AppLayout({ title = 'Submittal Automation', children }) 
           <strong style={{ color: 'var(--text-primary)' }}>{title}</strong>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>{user?.email}</span>
-            <div className="avatar">{initials}</div>
+            <button
+              className="btn btn-secondary"
+              style={{ height: 34 }}
+              onClick={() => navigate('/settings')}
+            >
+              Settings
+            </button>
+            <div className="avatar" title={user?.username}>{initials}</div>
             <button className="btn btn-secondary" style={{ height: 34 }} onClick={logout}>
               Sign out
             </button>

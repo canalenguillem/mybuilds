@@ -8,6 +8,7 @@ import TemplatesPage from './pages/Templates/TemplatesPage'
 import TemplateBuilder from './pages/Templates/TemplateBuilder'
 import SubmittalsPage from './pages/Submittals/SubmittalsPage'
 import CompliancePage from './pages/Compliance/CompliancePage'
+import SettingsPage from './pages/Settings/SettingsPage'
 
 const protect = (el) => <ProtectedRoute>{el}</ProtectedRoute>
 
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/submittals" element={protect(<SubmittalsPage />)} />
           <Route path="/compliance" element={protect(<CompliancePage />)} />
           <Route path="/analytics" element={protect(<Placeholder title="Analytics" />)} />
+          <Route path="/settings" element={protect(<SettingsPage />)} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

@@ -23,7 +23,7 @@ from app.models.compliance import (
     StatementListResponse,
 )
 from app.models.common import UserBrief
-from app.services import audit_service
+from app.services import audit_service, settings_service
 from app.services.ai_service import AIService
 from app.utils.pdf_utils import extract_text
 
@@ -34,7 +34,8 @@ _EVIDENCE_TYPES = ("datasheets", "certificates", "manuals", "compliance_docs")
 class ComplianceService:
     def __init__(self, db: Session) -> None:
         self.db = db
-        self.ai = AIService()
+        api_key, model = settings_service.get_openai_config(db)
+        self.ai = AIService(api_key=api_key, model=model)
 
     # ── Analysis (invoked by the Celery worker) ─────────────────
     def run_analysis(

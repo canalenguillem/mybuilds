@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  input, button, textarea, select { font-family: inherit; font-size: inherit; color: inherit; }
+  button { cursor: pointer; }
+  ::placeholder { color: #9aa3ad; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: #d4dae1; border-radius: 6px; border: 2px solid transparent; background-clip: content-box; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: none; } }
+</style>
+</helmet>
+
+<div style="min-height: 100vh; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #333; -webkit-font-smoothing: antialiased;">
+
+<sc-if value="{{ showAuth }}" hint-placeholder-val="{{ true }}">
+  <div style="min-height: 100vh; display: flex; background: linear-gradient(135deg, #0066cc 0%, #003d80 100%); position: relative;">
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 56px; color: #fff;" data-side-panel="1">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 36px; height: 36px; border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: center; color: #0066cc; font-weight: 700; font-size: 18px;">m</div>
+        <span style="font-size: 20px; font-weight: 700; letter-spacing: -.01em;">myBuilds</span>
+      </div>
+      <div>
+        <div style="font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; opacity: .65; margin-bottom: 20px;">Technical Submittal Automation</div>
+        <h1 style="font-size: 40px; line-height: 1.15; font-weight: 700; margin: 0 0 18px; letter-spacing: -.02em; max-width: 460px;">Generate compliant submittals in minutes, not days.</h1>
+        <p style="font-size: 16px; line-height: 1.6; opacity: .8; margin: 0; max-width: 420px;">Pull datasheets, certificates and compliance statements from your document library into branded, consultant-ready packages — automatically.</p>
+      </div>
+      <div style="display: flex; gap: 40px;">
+        <div><div style="font-size: 26px; font-weight: 700;">12k+</div><div style="font-size: 13px; opacity: .7;">Submittals generated</div></div>
+        <div><div style="font-size: 26px; font-weight: 700;">98.4%</div><div style="font-size: 13px; opacity: .7;">Compliance accuracy</div></div>
+        <div><div style="font-size: 26px; font-weight: 700;">6 min</div><div style="font-size: 13px; opacity: .7;">Avg. generation time</div></div>
+      </div>
+    </div>
+
+    <div style="width: 520px; max-width: 100%; background: #fff; display: flex; flex-direction: column; justify-content: center; padding: 48px 64px; animation: fadeIn .4s ease;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 36px;" data-mobile-logo="1">
+        <div style="width: 32px; height: 32px; border-radius: 7px; background: #0066cc; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 17px;">m</div>
+        <span style="font-size: 18px; font-weight: 700; color: #1a1a1a;">myBuilds</span>
+      </div>
+
+      <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+        <div style="animation: fadeIn .3s ease;">
+          <h2 style="font-size: 26px; font-weight: 700; margin: 0 0 6px; color: #1a1a1a; letter-spacing: -.02em;">Welcome back</h2>
+          <p style="font-size: 15px; color: #666; margin: 0 0 28px;">Sign in to your workspace to continue.</p>
+          <sc-if value="{{ authError }}" hint-placeholder-val="">
+            <div style="background: #fdecea; border: 1px solid #f5c6c2; color: #b3251a; font-size: 13.5px; padding: 11px 14px; border-radius: 6px; margin-bottom: 18px; display: flex; gap: 8px; align-items: center;">{{ authError }}</div>
+          </sc-if>
+          <label style="display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 7px;">Email address</label>
+          <div style="position: relative; margin-bottom: 18px;">
+            <span style="position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: #9aa3ad;">{{ iconMail }}</span>
+            <input type="email" value="sarah.chen@acmebuild.com" placeholder="you@company.com" style="width: 100%; height: 44px; border: 1px solid #d4dae1; border-radius: 6px; padding: 0 14px 0 40px; font-size: 14.5px; outline: none; transition: border-color .15s, box-shadow .15s;" style-focus="border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,.12);">
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px;">
+            <label style="font-size: 13px; font-weight: 600; color: #444;">Password</label>
+            <span onClick="{{ goReset }}" style="font-size: 13px; color: #0066cc; font-weight: 500; cursor: pointer;">Forgot password?</span>
+          </div>
+          <div style="position: relative; margin-bottom: 18px;">
+            <span style="position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: #9aa3ad;">{{ iconLock }}</span>
+            <input type="{{ pwdType }}" value="demopassword" style="width: 100%; height: 44px; border: 1px solid #d4dae1; border-radius: 6px; padding: 0 44px 0 40px; font-size: 14.5px; outline: none; transition: border-color .15s, box-shadow .15s;" style-focus="border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,.12);">
+            <span onClick="{{ togglePwd }}" style="position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: #9aa3ad; cursor: pointer;">{{ iconEye }}</span>
+          </div>
+          <label style="display: flex; align-items: center; gap: 9px; font-size: 13.5px; color: #555; margin-bottom: 24px; cursor: pointer;">
+            <span onClick="{{ toggleRemember }}" style="{{ checkboxStyle }}">{{ checkMark }}</span>
+            Remember me for 30 days
+          </label>
+          <button onClick="{{ doLogin }}" style="{{ primaryBtnFull }}" style-hover="background: #0052a3;">
+            <sc-if value="{{ authLoading }}" hint-placeholder-val="">
+              <span style="width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; display: inline-block; animation: spin .7s linear infinite;"></span>
+            </sc-if>
+            {{ loginBtnLabel }}
+          </button>
+          <p style="text-align: center; font-size: 14px; color: #666; margin: 24px 0 0;">New to myBuilds? <span onClick="{{ goRegister }}" style="color: #0066cc; font-weight: 600; cursor: pointer;">Create an account</span></p>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isRegister }}" hint-placeholder-val="">
+        <div style="animation: fadeIn .3s ease;">
+          <h2 style="font-size: 26px; font-weight: 700; margin: 0 0 6px; color: #1a1a1a; letter-spacing: -.02em;">Create your account</h2>
+          <p style="font-size: 15px; color: #666; margin: 0 0 24px;">Get started with your team's submittal workspace.</p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+            <div><label style="display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 7px;">Full name</label><input placeholder="Jane Doe" style="{{ inputStyle }}" style-focus="border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,.12);"></div>
+            <div><label style="display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 7px;">Username</label><input placeholder="jdoe" style="{{ inputStyle }}" style-focus="border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,.12);"></div>
+          </div>
+          <div style="margin-bottom: 14px;"><label style="display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 7px;">Work email</label><input placeholder="you@company.com" style="{{ inputStyle }}" style-focus="border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,.12);"></div>
+          <div style="margin-bottom: 14px;"><label style="display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 7px;">Company</label><input placeholder="Acme Building Supply" style="{{ inputStyle }}" style-focus="border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,.12);"></div>
+          <div style="margin-bottom: 10px;"><label style="display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 7px;">Password</label><input type="password" onInput="{{ onPwdInput }}" placeholder="Create a strong password" style="{{ inputStyle }}" style-focus="border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,.12);"></div>
+          <div style="display: flex; gap: 5px; margin-bottom: 6px;">
+            <span style="height: 4px; flex: 1; border-radius: 2px; background: {{ strengthC1 }};"></span>
+            <span style="height: 4px; flex: 1; border-radius: 2px; background: {{ strengthC2 }};"></span>
+            <span style="height: 4px; flex: 1; border-radius: 2px; background: {{ strengthC3 }};"></span>
+            <span style="height: 4px; flex: 1; border-radius: 2px; background: {{ strengthC4 }};"></span>
+          </div>
+          <p style="font-size: 12.5px; color: #888; margin: 0 0 18px;">{{ strengthLabel }} — 8+ characters, with a number and uppercase letter.</p>
+          <label style="display: flex; align-items: flex-start; gap: 9px; font-size: 13px; color: #555; margin-bottom: 20px; cursor: pointer; line-height: 1.5;">
+            <span style="{{ checkboxStyle }}; flex-shrink: 0; margin-top: 1px;">{{ checkMark }}</span>
+            I agree to the <span style="color: #0066cc; font-weight: 600;">Terms of Service</span> and <span style="color: #0066cc; font-weight: 600;">Privacy Policy</span>.
+          </label>
+          <button onClick="{{ doLogin }}" style="{{ primaryBtnFull }}" style-hover="background: #0052a3;">Create account</button>
+          <p style="text-align: center; font-size: 14px; color: #666; margin: 22px 0 0;">Already have an account? <span onClick="{{ goLogin }}" style="color: #0066cc; font-weight: 600; cursor: pointer;">Sign in</span></p>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isReset }}" hint-placeholder-val="">
+        <div style="animation: fadeIn .3s ease;">
+          <h2 style="font-size: 26px; font-weight: 700; margin: 0 0 6px; color: #1a1a1a; letter-spacing: -.02em;">Reset your password</h2>
+          <p style="font-size: 15px; color: #666; margin: 0 0 28px;">Enter your account email and we'll send you a secure reset link.</p>
+          <sc-if value="{{ resetSent }}" hint-placeholder-val="">
+            <div style="background: #eaf6ec; border: 1px solid #b6e0bf; color: #1e7a32; font-size: 14px; padding: 14px 16px; border-radius: 8px; margin-bottom: 24px; display: flex; gap: 10px; align-items: flex-start; line-height: 1.5;">
+              <span style="flex-shrink: 0; margin-top: 1px;">{{ iconCheckCircle }}</span>
+              <span>Check your inbox — we've sent reset instructions to your email address. The link expires in 30 minutes.</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ resetNotSent }}" hint-placeholder-val="{{ true }}">
+            <label style="display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 7px;">Email address</label>
+            <div style="position: relative; margin-bottom: 22px;">
+              <span style="position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: #9aa3ad;">{{ iconMail }}</span>
+              <input type="email" placeholder="you@company.com" style="width: 100%; height: 44px; border: 1px solid #d4dae1; border-radius: 6px; padding: 0 14px 0 40px; font-size: 14.5px; outline: none;" style-focus="border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,.12);">
+            </div>
+            <button onClick="{{ doReset }}" style="{{ primaryBtnFull }}" style-hover="background: #0052a3;">Send reset link</button>
+          </sc-if>
+          <p style="text-align: center; font-size: 14px; color: #666; margin: 22px 0 0;"><span onClick="{{ goLogin }}" style="color: #0066cc; font-weight: 600; cursor: pointer;">&larr; Back to sign in</span></p>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ loggedIn }}" hint-placeholder-val="">
+  <div style="display: flex; min-height: 100vh; background: #f5f7fa;">
+    <!-- SIDEBAR -->
+    <aside style="width: 232px; background: #ffffff; border-right: 1px solid #e6eaef; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0;">
+      <div style="display: flex; align-items: center; gap: 10px; padding: 20px 22px; border-bottom: 1px solid #eef1f5;">
+        <div style="width: 30px; height: 30px; border-radius: 7px; background: #0066cc; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 16px;">m</div>
+        <span style="font-size: 17px; font-weight: 700; color: #1a1a1a; letter-spacing: -.01em;">myBuilds</span>
+      </div>
+      <div style="padding: 16px 14px; flex: 1;">
+        <button onClick="{{ openWizard }}" style="width: 100%; height: 42px; background: #0066cc; color: #fff; border: none; border-radius: 7px; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 18px;" style-hover="background: #0052a3;">{{ iconPlus }} New Submittal</button>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: #98a2b0; padding: 6px 10px 8px;">Workspace</div>
+        <sc-for list="{{ navItems }}" as="nav" hint-placeholder-count="4">
+          <div onClick="{{ nav.go }}" style="{{ nav.style }}" style-hover="background: #f1f5f9;">
+            <span style="display: flex;">{{ nav.icon }}</span>
+            <span style="flex: 1;">{{ nav.label }}</span>
+            <sc-if value="{{ nav.count }}" hint-placeholder-val="">
+              <span style="font-size: 11.5px; font-weight: 600; background: {{ nav.badgeBg }}; color: {{ nav.badgeColor }}; padding: 1px 8px; border-radius: 10px;">{{ nav.count }}</span>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding: 14px; border-top: 1px solid #eef1f5;">
+        <div style="background: #f1f6fd; border: 1px solid #d6e6fa; border-radius: 9px; padding: 13px 14px;">
+          <div style="font-size: 12.5px; font-weight: 600; color: #1a4a82; margin-bottom: 5px;">Storage</div>
+          <div style="height: 6px; background: #d6e6fa; border-radius: 4px; overflow: hidden; margin-bottom: 7px;"><div style="width: 64%; height: 100%; background: #0066cc;"></div></div>
+          <div style="font-size: 11.5px; color: #5a7da6;">6.4 GB of 10 GB used</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN COLUMN -->
+    <div style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+      <!-- TOPBAR -->
+      <header style="height: 62px; background: #fff; border-bottom: 1px solid #e6eaef; display: flex; align-items: center; gap: 16px; padding: 0 26px; position: sticky; top: 0; z-index: 30;">
+        <div style="position: relative; flex: 1; max-width: 440px;">
+          <span style="position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: #9aa3ad;">{{ iconSearch }}</span>
+          <input placeholder="Search submittals, documents, templates..." style="width: 100%; height: 40px; background: #f3f5f8; border: 1px solid transparent; border-radius: 8px; padding: 0 14px 0 40px; font-size: 14px; outline: none;" style-focus="background: #fff; border-color: #cdd6e0; box-shadow: 0 0 0 3px rgba(0,102,204,.10);">
+        </div>
+        <div style="flex: 1;"></div>
+        <button style="width: 40px; height: 40px; border: 1px solid #e6eaef; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #5a6573; position: relative;" style-hover="background: #f5f7fa;">{{ iconBell }}<span style="position: absolute; top: 9px; right: 10px; width: 7px; height: 7px; background: #ff6b35; border-radius: 50%; border: 1.5px solid #fff;"></span></button>
+        <div style="width: 1px; height: 26px; background: #e6eaef;"></div>
+        <div style="position: relative;">
+          <div onClick="{{ toggleUserMenu }}" style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 4px 6px 4px 4px; border-radius: 8px;" style-hover="background: #f5f7fa;">
+            <div style="width: 34px; height: 34px; border-radius: 50%; background: #0066cc; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13.5px;">SC</div>
+            <div style="line-height: 1.25;"><div style="font-size: 13.5px; font-weight: 600; color: #1a1a1a;">Sarah Chen</div><div style="font-size: 12px; color: #8a94a2;">Operator</div></div>
+            <span style="color: #9aa3ad;">{{ iconChevron }}</span>
+          </div>
+          <sc-if value="{{ userMenuOpen }}" hint-placeholder-val="">
+            <div style="position: absolute; right: 0; top: 52px; width: 210px; background: #fff; border: 1px solid #e6eaef; border-radius: 10px; box-shadow: 0 12px 32px rgba(20,40,70,.14); padding: 6px; animation: pop .15s ease; z-index: 40;">
+              <div style="padding: 10px 12px; border-bottom: 1px solid #eef1f5; margin-bottom: 4px;"><div style="font-size: 13.5px; font-weight: 600;">Sarah Chen</div><div style="font-size: 12px; color: #8a94a2;">sarah.chen@acmebuild.com</div></div>
+              <div onClick="{{ goProfile }}" style="{{ menuItemStyle }}" style-hover="background: #f5f7fa;">{{ iconUser }} My Profile</div>
+              <div onClick="{{ goProfile }}" style="{{ menuItemStyle }}" style-hover="background: #f5f7fa;">{{ iconSettings }} Preferences</div>
+              <div style="height: 1px; background: #eef1f5; margin: 4px 0;"></div>
+              <div onClick="{{ doLogout }}" style="{{ menuItemStyle }}; color: #dc3545;" style-hover="background: #fdf2f2;">{{ iconLogout }} Sign out</div>
+            </div>
+          </sc-if>
+        </div>
+      </header>
+
+      <!-- SCREENS -->
+      <main style="flex: 1; overflow-x: hidden;">
+
+        <!-- DASHBOARD -->
+        <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ true }}">
+          <section data-screen-label="Dashboard" style="padding: 28px 32px 48px; animation: fadeIn .3s ease;">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 26px;">
+              <div>
+                <h1 style="font-size: 25px; font-weight: 700; color: #1a1a1a; margin: 0 0 4px; letter-spacing: -.02em;">Good morning, Sarah</h1>
+                <p style="font-size: 14.5px; color: #6b7685; margin: 0;">Here's what's happening across your submittal workspace today.</p>
+              </div>
+              <div style="display: flex; gap: 10px;">
+                <button onClick="{{ goDocuments }}" style="{{ secondaryBtn }}" style-hover="background: #f5f7fa;">{{ iconUpload }} Upload Document</button>
+                <button onClick="{{ openWizard }}" style="{{ primaryBtn }}" style-hover="background: #0052a3;">{{ iconPlus }} New Submittal</button>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 22px;">
+              <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+                <div style="background: #fff; border: 1px solid #e9edf2; border-radius: 12px; padding: 18px 20px;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+                    <span style="width: 38px; height: 38px; border-radius: 9px; background: {{ k.iconBg }}; color: {{ k.iconColor }}; display: flex; align-items: center; justify-content: center;">{{ k.icon }}</span>
+                    <span style="font-size: 12.5px; font-weight: 600; color: {{ k.trendColor }}; background: {{ k.trendBg }}; padding: 2px 8px; border-radius: 6px;">{{ k.trend }}</span>
+                  </div>
+                  <div style="font-size: 27px; font-weight: 700; color: #1a1a1a; letter-spacing: -.02em;">{{ k.value }}</div>
+                  <div style="font-size: 13px; color: #7a8493; margin-top: 2px;">{{ k.label }}</div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1.7fr 1fr; gap: 18px; margin-bottom: 22px;">
+              <div style="background: #fff; border: 1px solid #e9edf2; border-radius: 12px; padding: 20px 22px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+                  <div><div style="font-size: 15px; font-weight: 700; color: #1a1a1a;">Submittals generated</div><div style="font-size: 12.5px; color: #8a94a2;">Last 30 days</div></div>
+                  <div style="font-size: 12.5px; color: #8a94a2; display: flex; gap: 14px;"><span style="display: flex; align-items: center; gap: 6px;"><span style="width: 9px; height: 9px; border-radius: 2px; background: #0066cc;"></span>This month</span></div>
+                </div>
+                <div style="display: flex; align-items: flex-end; gap: 6px; height: 168px;">
+                  <sc-for list="{{ chartBars }}" as="b" hint-placeholder-count="14">
+                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%;" title="{{ b.label }}">
+                      <div style="width: 100%; background: {{ b.color }}; border-radius: 4px 4px 0 0; height: {{ b.h }}; transition: height .3s;"></div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="background: #fff; border: 1px solid #e9edf2; border-radius: 12px; padding: 20px 22px;">
+                <div style="font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px;">Status distribution</div>
+                <div style="font-size: 12.5px; color: #8a94a2; margin-bottom: 18px;">All submittals</div>
+                <div style="display: flex; justify-content: center; margin-bottom: 18px;">
+                  <div style="width: 132px; height: 132px; border-radius: 50%; background: {{ donutGradient }}; display: flex; align-items: center; justify-content: center;">
+                    <div style="width: 86px; height: 86px; border-radius: 50%; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center;"><div style="font-size: 22px; font-weight: 700; color: #1a1a1a;">312</div><div style="font-size: 11px; color: #8a94a2;">Total</div></div>
+                  </div>
+                </div>
+                <sc-for list="{{ statusLegend }}" as="s" hint-placeholder-count="3">
+                  <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 9px; font-size: 13px;">
+                    <span style="width: 10px; height: 10px; border-radius: 3px; background: {{ s.color }};"></span>
+                    <span style="flex: 1; color: #4a5563;">{{ s.label }}</span>
+                    <span style="font-weight: 600; color: #1a1a1a;">{{ s.value }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="background: #fff; border: 1px solid #e9edf2; border-radius: 12px; overflow: hidden;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 22px; border-bottom: 1px solid #eef1f5;">
+                <div style="font-size: 15px; font-weight: 700; color: #1a1a1a;">Recent submittals</div>
+                <span onClick="{{ goSubmittals }}" style="font-size: 13.5px; color: #0066cc; font-weight: 600; cursor: pointer;">View all &rarr;</span>
+              </div>
+              <table style="width: 100%; border-collapse: collapse;">
+                <thead><tr style="background: #fafbfc;">
+                  <th style="{{ thStyle }}">Submittal</th><th style="{{ thStyle }}">Product</th><th style="{{ thStyle }}">Consultant</th><th style="{{ thStyle }}">Status</th><th style="{{ thStyle }}">Date</th><th style="{{ thStyle }}; text-align: right;"></th>
+                </tr></thead>
+                <tbody>
+                  <sc-for list="{{ recentSubs }}" as="s" hint-placeholder-count="6">
+                    <tr onClick="{{ s.open }}" style="border-top: 1px solid #f0f2f5; cursor: pointer;" style-hover="background: #f8fafc;">
+                      <td style="{{ tdStyle }}; font-weight: 600; color: #0066cc;">{{ s.number }}</td>
+                      <td style="{{ tdStyle }}">{{ s.product }}</td>
+                      <td style="{{ tdStyle }}; color: #6b7685;">{{ s.consultant }}</td>
+                      <td style="{{ tdStyle }}"><span style="{{ s.badge }}">{{ s.status }}</span></td>
+                      <td style="{{ tdStyle }}; color: #6b7685;">{{ s.date }}</td>
+                      <td style="{{ tdStyle }}; text-align: right; color: #9aa3ad;">{{ iconChevronR }}</td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </sc-if>
+
+        <!-- DOCUMENTS -->
+        <sc-if value="{{ isDocuments }}" hint-placeholder-val="">
+          <section data-screen-label="Documents" style="padding: 28px 32px 48px; animation: fadeIn .3s ease;">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 24px;">
+              <div>
+                <h1 style="font-size: 25px; font-weight: 700; color: #1a1a1a; margin: 0 0 4px; letter-spacing: -.02em;">Documents Library</h1>
+                <p style="font-size: 14.5px; color: #6b7685; margin: 0;">Datasheets, certificates, manuals and compliance documents.</p>
+              </div>
+              <button onClick="{{ openUpload }}" style="{{ primaryBtn }}" style-hover="background: #0052a3;">{{ iconUpload }} Upload Document</button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 220px 1fr; gap: 22px; align-items: start;">
+              <!-- doc sidebar -->
+              <div style="background: #fff; border: 1px solid #e9edf2; border-radius: 12px; padding: 14px;">
+                <div style="font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #98a2b0; padding: 4px 10px 8px;">Filter by type</div>
+                <sc-for list="{{ docTypeFilters }}" as="f" hint-placeholder-count="6">
+                  <div onClick="{{ f.setF }}" style="{{ f.style }}" style-hover="background: #f1f5f9;">
+                    <span>{{ f.label }}</span><span style="font-size: 12px; color: #9aa3ad; font-weight: 500;">{{ f.count }}</span>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div>
+                <!-- toolbar -->
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                  <div style="position: relative; flex: 1; max-width: 380px;">
+                    <span style="position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: #9aa3ad;">{{ iconSearch }}</span>
+                    <input placeholder="Search documents..." style="width: 100%; height: 40px; background: #fff; border: 1px solid #e0e5ec; border-radius: 8px; padding: 0 14px 0 40px; font-size: 14px; outline: none;" style-focus="border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,.10);">
+                  </div>
+                  <button style="{{ secondaryBtn }}" style-hover="background: #f5f7fa;">{{ iconFilter }} Filters</button>
+                  <div style="flex: 1;"></div>
+                  <div style="display: flex; gap: 3px; background: #eef1f5; border-radius: 8px; padding: 3px;">
+                    <button onClick="{{ setDocList }}" style="{{ listBtnStyle }}">{{ iconList }}</button>
+                    <button onClick="{{ setDocGrid }}" style="{{ gridBtnStyle }}">{{ iconGrid }}</button>
+                  </div>
+                </div>
+
+                <!-- list view -->
+                <sc-if value="{{ isDocList }}" hint-placeholder-val="{{ true }}">
+                  <div style="background: #fff; border: 1px solid #e9edf2; border-radius: 12px; overflow: hidden;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                      <thead><tr style="background: #fafbfc;">
+                        <th style="{{ thStyle }}">Document</th><th style="{{ thStyle }}">Type</th><th style="{{ thStyle }}">Version</th><th style="{{ thStyle }}">Size</th><th style="{{ thStyle }}">Uploaded</th><th style="{{ thStyle }}; text-align: right;">Actions</th>
+                      </tr></thead>
+                      <tbody>
+                        <sc-for list="{{ documents }}" as="d" hint-placeholder-count="8">
+                          <tr style="border-top: 1px solid #f0f2f5;" style-hover="background: #f8fafc;">
+                            <td style="{{ tdStyle }}">
+                              <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="width: 34px; height: 34px; border-radius: 8px; background: #f1f5f9; color: #6b7685; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">{{ iconDoc }}</span>
+                                <div><div style="font-weight: 600; color: #1a1a1a; line-height: 1.3;">{{ d.name }}</div><div style="font-size: 12px; color: #9aa3ad; margin-top: 1px;">{{ d.product }}</div></div>
+                              </div>
+                            </td>
+                            <td style="{{ tdStyle }}"><span style="{{ d.typeStyle }}">{{ d.type }}</span></td>
+                            <td style="{{ tdStyle }}; color: #6b7685;">{{ d.version }}</td>
+                            <td style="{{ tdStyle }}; color: #6b7685;">{{ d.size }}</td>
+                            <td style="{{ tdStyle }}; color: #6b7685;">{{ d.date }}</td>
+                            <td style="{{ tdStyle }}; text-align: right;">
+                              <div style="display: inline-flex; gap: 4px;">
+                                <button onClick="{{ d.preview }}" title="Preview" style="{{ iconBtnStyle }}" style-hover="background: #eef2f7; color: #0066cc;">{{ iconEye }}</button>
+                                <button onClick="{{ d.download }}" title="Download" style="{{ iconBtnStyle }}" style-hover="background: #eef2f7; color: #0066cc;">{{ iconDownload }}</button>
+                                <button onClick="{{ d.versions }}" title="Versions" style="{{ iconBtnStyle }}" style-hover="background: #eef2f7; color: #0066cc;">{{ iconHistory }}</button>
+                                <button onClick="{{ d.remove }}" title="Delete" style="{{ iconBtnStyle }}" style-hover="background: #fdf2f2; color: #dc3545;">{{ iconTrash }}</button>
+                              </div>
+                            </td>
+                          </tr>
+                        </sc-for>
+                      </tbody>
+                    </table>
+                  </div>
+                </sc-if>
+
+                <!-- grid view -->
+                <sc-if value="{{ isDocGrid }}" hint-placeholder-val="">
+                  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+                    <sc-for list="{{ documents }}" as="d" hint-placeholder-count="6">
+                      <div style="background: #fff; border: 1px solid #e9edf2; border-radius: 12px; padding: 16px; transition: box-shadow .15s, border-color .15s;" style-hover="box-shadow: 0 6px 20px rgba(20,40,70,.10); border-color: #d6e0ec;">
+                        <div style="height: 96px; border-radius: 8px; background: repeating-linear-gradient(135deg, #f3f6fa, #f3f6fa 9px, #eef2f7 9px, #eef2f7 18px); display: flex; align-items: center; justify-content: center; color: #b4bdc8; margin-bottom: 13px;">{{ iconDoc }}</div>
+                        <span style="{{ d.typeStyle }}">{{ d.type }}</span>
+                        <div style="font-weight: 600; color: #1a1a1a; font-size: 13.5px; line-height: 1.35; margin: 9px 0 4px;">{{ d.name }}</div>
+                        <div style="font-size: 12px; color: #9aa3ad; display: flex; justify-content: space-between;"><span>{{ d.version }}</span><span>{{ d.size }}</span></div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </section>
+        </sc-if>
+
+        <!-- TEMPLATES LIST -->
+        <sc-if value="{{ isTemplates }}" hint-placeholder-val="">
+          <section data-screen-label="Templates" style="padding: 28px 32px 48px; animation: fadeIn .3s ease;">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 24px;">
+              <div>
+                <h1 style="font-size: 25px; font-weight: 700; color: #1a1a1a; margin: 0 0 4px; letter-spacing: -.02em;">Submittal Templates</h1>
+                <p style="font-size: 14.5px; color: #6b7685; margin: 0;">Reusable section structures for generating submittals per product and consultant.</p>
+              </div>
+              <button onClick="{{ openBuilder }}" style="{{ primaryBtn }}" style-hover="background: #0052a3;">{{ iconPlus }} Create Template</button>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 18px;">
+              <div style="position: relative; flex: 1; max-width: 380px;">
+                <span style="position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: #9aa3ad;">{{ iconSearch }}</span>
+                <input placeholder="Search templates..." style="width: 100%; height: 40px; background: #fff; border: 1px solid #e0e5ec; border-radius: 8px; padding: 0 14px 0 40px; font-size: 14px; outline: none;" style-focus="border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,.10);">
+              </div>
+              <button style="{{ secondaryBtn }}" style-hover="background: #f5f7fa;">{{ iconFilter }} Filters</button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;">
+              <sc-for list="{{ templates }}" as="t" hint-placeholder-count="6">
+                <div onClick="{{ t.edit }}" style="background: #fff; border: 1px solid #e9edf2; border-radius: 12px; padding: 20px; cursor: pointer; transition: box-shadow .15s, border-color .15s;" style-hover="box-shadow: 0 8px 24px rgba(20,40,70,.10); border-color: #d6e0ec;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+                    <span style="width: 42px; height: 42px; border-radius: 10px; background: #f0ecfd; color: #6b4ed8; display: flex; align-items: center; justify-content: center;">{{ iconLayersLg }}</span>
+                    <span style="{{ t.statusStyle }}">{{ t.status }}</span>
+                  </div>
+                  <div style="font-size: 16px; font-weight: 700; color: #1a1a1a; line-height: 1.3; margin-bottom: 4px;">{{ t.name }}</div>
+                  <div style="font-size: 13px; color: #6b7685; margin-bottom: 12px;">{{ t.product }}</div>
+                  <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 14px;">
+                    <span style="{{ t.typeStyle }}">{{ t.type }}</span>
+                    <span style="font-size: 12.5px; color: #9aa3ad;">{{ t.sections }} sections</span>
+                  </div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 13px; border-top: 1px solid #f0f2f5;">
+                    <span style="font-size: 12px; color: #9aa3ad;">{{ t.consultantDisplay }}</span>
+                    <div style="display: flex; gap: 4px;">
+                      <button onClick="{{ t.edit }}" title="Edit" style="{{ iconBtnStyle }}" style-hover="background: #eef2f7; color: #0066cc;">{{ iconEdit }}</button>
+                      <button onClick="{{ t.duplicate }}" title="Duplicate" style="{{ iconBtnStyle }}" style-hover="background: #eef2f7; color: #0066cc;">{{ iconCopy }}</button>
+                      <button onClick="{{ t.remove }}" title="Delete" style="{{ iconBtnStyle }}" style-hover="background: #fdf2f2; color: #dc3545;">{{ iconTrash }}</button>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+        </sc-if>
+
+        <!-- TEMPLATE BUILDER -->
+        <sc-if value="{{ isBuilder }}" hint-placeholder-val="">
+          <section data-screen-label="Template Builder" style="display: flex; flex-direction: column; height: calc(100vh - 62px); animation: fadeIn .3s ease;">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 28px; background: #fff; border-bottom: 1px solid #e6eaef;">
+              <div style="display: flex; align-items: center; gap: 14px;">
+                <button onClick="{{ goTemplates }}" style="width: 36px; height: 36px; border: 1px solid #e0e5ec; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #5a6573; transform: rotate(90deg);" style-hover="background: #f5f7fa;">{{ iconBack }}</button>
+                <div><div style="font-size: 17px; font-weight: 700; color: #1a1a1a;">Standard Facade Submittal</div><div style="font-size: 13px; color: #8a94a2;">AcoustiClad 50mm Panel · Hassell Studio</div></div>
+              </div>
+              <div style="display: flex; gap: 10px;">
+                <button style="{{ secondaryBtn }}" style-hover="background: #f5f7fa;">{{ iconEye }} Preview</button>
+                <button onClick="{{ saveTemplate }}" style="{{ primaryBtn }}" style-hover="background: #0052a3;">Save Template</button>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 252px 1fr 300px; flex: 1; min-height: 0;">
+              <!-- left: available sections -->
+              <div style="background: #fafbfc; border-right: 1px solid #eef1f5; padding: 18px; overflow: auto;">
+                <div style="font-size: 12.5px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px;">Available Sections</div>
+                <div style="font-size: 12px; color: #9aa3ad; margin-bottom: 14px;">Click to add to your template.</div>
+                <sc-for list="{{ availSecs }}" as="a" hint-placeholder-count="4">
+                  <div onClick="{{ a.add }}" style="background: #fff; border: 1px solid #e6eaef; border-radius: 9px; padding: 12px 13px; margin-bottom: 9px; cursor: pointer; transition: border-color .12s, box-shadow .12s;" style-hover="border-color: #0066cc; box-shadow: 0 2px 8px rgba(0,102,204,.08);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                      <span style="{{ a.typeStyle }}">{{ a.type }}</span>
+                      <span style="color: #0066cc;">{{ iconPlus }}</span>
+                    </div>
+                    <div style="font-size: 13.5px; font-weight: 600; color: #374151;">{{ a.name }}</div>
+                  </div>
+                </sc-for>
+              </div>
+
+              <!-- center: canvas -->
+              <div style="padding: 24px 28px; overflow: auto; background: #f5f7fa;">
+                <div style="max-width: 620px; margin: 0 auto;">
+                  <div style="font-size: 12.5px; font-weight: 600; color: #8a94a2; margin-bottom: 14px;">Drag the handle to reorder · {{ templateCount }} active sections</div>
+                  <sc-for list="{{ builderSections }}" as="s" hint-placeholder-count="6">
+                    <div draggable="true" onDragStart="{{ s.onDragStart }}" onDragOver="{{ s.onDragOver }}" onDrop="{{ s.onDrop }}" onClick="{{ s.select }}" style="{{ s.cardStyle }}; margin-bottom: 11px;" style-hover="border-color: #b9cde6;">
+                      <span style="color: #b4bdc8; cursor: grab; display: flex;">{{ iconDrag }}</span>
+                      <div style="flex: 1;">
+                        <div style="font-size: 14.5px; font-weight: 600; color: #1a1a1a; margin-bottom: 5px;">{{ s.name }}</div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                          <span style="{{ s.typeStyle }}">{{ s.type }}</span>
+                          <span style="{{ s.mandatoryStyle }}">{{ s.mandatoryLabel }}</span>
+                          <span style="font-size: 12px; color: #9aa3ad;">{{ s.docs }} docs</span>
+                        </div>
+                      </div>
+                      <button onClick="{{ s.removeSec }}" title="Remove" style="{{ iconBtnStyle }}" style-hover="background: #fdf2f2; color: #dc3545;">{{ iconTrash }}</button>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <!-- right: properties -->
+              <div style="background: #fff; border-left: 1px solid #eef1f5; padding: 20px; overflow: auto;">
+                <div style="font-size: 12.5px; font-weight: 700; color: #1a1a1a; margin-bottom: 16px;">Section Properties</div>
+                <label style="display: block; font-size: 12.5px; font-weight: 600; color: #444; margin-bottom: 6px;">Section name</label>
+                <input value="{{ selName }}" style="width: 100%; height: 40px; border: 1px solid #d4dae1; border-radius: 7px; padding: 0 12px; font-size: 13.5px; outline: none; margin-bottom: 16px;" style-focus="border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,.12);">
+                <label style="display: block; font-size: 12.5px; font-weight: 600; color: #444; margin-bottom: 6px;">Section type</label>
+                <input value="{{ selType }}" readonly style="width: 100%; height: 40px; border: 1px solid #e6eaef; background: #f7f9fb; border-radius: 7px; padding: 0 12px; font-size: 13.5px; outline: none; color: #6b7685; margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: #f7fafe; border-radius: 9px; margin-bottom: 16px;">
+                  <div><div style="font-size: 13.5px; font-weight: 600; color: #374151;">Mandatory section</div><div style="font-size: 12px; color: #9aa3ad;">Always included</div></div>
+                  <div onClick="{{ toggleMandatory }}" style="{{ selMandatoryStyle }}"><span style="width: 20px; height: 20px; border-radius: 50%; background: #fff;"></span></div>
+                </div>
+                <label style="display: block; font-size: 12.5px; font-weight: 600; color: #444; margin-bottom: 6px;">Linked documents</label>
+                <div style="border: 1px solid #e6eaef; border-radius: 9px; padding: 12px 14px; font-size: 13px; color: #6b7685;">{{ selDocs }}</div>
+              </div>
+            </div>
+          </section>
+        </sc-if>
+
+        <!-- WIZARD -->
+        <sc-if value="{{ isWizard }}" hint-placeholder-val="">
+          <section data-screen-label="New Submittal" style="padding: 28px 32px 48px; animation: fadeIn .3s ease;">
+            <sc-if value="{{ wizardActive }}" hint-placeholder-val="{{ true }}">
+              <div style="max-width: 760px; margin: 0 auto;">
+                <h1 style="font-size: 24px; font-weight: 700; color: #1a1a1a; margin: 0 0 22px; letter-spacing: -.02em;">Generate New Submittal</h1>
+
+                <!-- step bar -->
+                <div style="display: flex; align-items: center; margin-bottom: 28px;">
+                  <sc-for list="{{ stepObjs }}" as="st" hint-placeholder-count="5">
+                    <div style="display: flex; align-items: center; gap: 9px;">
+                      <span style="{{ st.circleStyle }}">{{ st.checkOrNum }}</span>
+                      <span style="{{ st.labelStyle }}">{{ st.label }}</span>
+                    </div>
+                    <sc-if value="{{ st.showLine }}" hint-placeholder-val="{{ true }}"><span style="{{ st.lineStyle }}"></span></sc-if>
+                  </sc-for>
+                </div>
+
+                <div style="background: #fff; border: 1px solid #e9edf2; border-radius: 14px; padding: 28px;">
+                  <!-- step 1 -->
+                  <sc-if value="{{ isWizardStep1 }}" hint-placeholder-val="{{ true }}">
+                    <div>
+                      <div style="font-size: 17px; font-weight: 700; color: #1a1a1a; margin-bottom: 3px;">Select product &amp; template</div>
+                      <div style="font-size: 13.5px; color: #8a94a2; margin-bottom: 18px;">Choose what you're submitting and the structure to use.</div>
+                      <div style="font-size: 13px; font-weight: 600; color: #444; margin-bottom: 10px;">Product</div>
+                      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 22px;">
+                        <sc-for list="{{ wizProducts }}" as="p" hint-placeholder-count="3">
+                          <div onClick="{{ p.pick }}" style="{{ p.style }}">
+                            <div style="font-size: 14px; font-weight: 700; color: #1a1a1a; line-height: 1.3; margin-bottom: 6px;">{{ p.name }}</div>
+                            <div style="font-size: 12px; color: #9aa3ad;">{{ p.cat }} · {{ p.sku }}</div>
+                          </div>
+                        </sc-for>
+                      </div>
+                      <div style="font-size: 13px; font-weight: 600; color: #444; margin-bottom: 10px;">Template</div>
+                      <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <sc-for list="{{ wizTemplates }}" as="t" hint-placeholder-count="2">
+                          <div onClick="{{ t.pick }}" style="{{ t.style }}">
+                            <span style="width: 38px; height: 38px; border-radius: 9px; background: #f0ecfd; color: #6b4ed8; display: flex; align-items: center; justify-content: center;">{{ iconLayersLg }}</span>
+                            <div><div style="font-size: 14px; font-weight: 600; color: #1a1a1a;">{{ t.name }}</div><div style="font-size: 12.5px; color: #9aa3ad;">{{ t.meta }}</div></div>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </sc-if>
+
+                  <!-- step 2 -->
+                  <sc-if value="{{ isWizardStep2 }}" hint-placeholder-val="">
+                    <div>
+                      <div style="font-size: 17px; font-weight: 700; color: #1a1a1a; margin-bottom: 3px;">Project &amp; consultant details</div>
+                      <div style="font-size: 13.5px; color: #8a94a2; margin-bottom: 20px;">This information appears on the submittal cover page.</div>
+                      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+                        <div><label style="display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:6px;">Project name <span style="color:#dc3545;">*</span></label><input value="Marina Bay Tower — Facade" style="{{ inputStyle }}" style-focus="border-color:#0066cc;box-shadow:0 0 0 3px rgba(0,102,204,.12);"></div>
+                        <div><label style="display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:6px;">Project code <span style="color:#dc3545;">*</span></label><input value="MBT-2026" style="{{ inputStyle }}" style-focus="border-color:#0066cc;box-shadow:0 0 0 3px rgba(0,102,204,.12);"></div>
+                        <div><label style="display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:6px;">Consultant name <span style="color:#dc3545;">*</span></label><input value="Hassell Studio" style="{{ inputStyle }}" style-focus="border-color:#0066cc;box-shadow:0 0 0 3px rgba(0,102,204,.12);"></div>
+                        <div><label style="display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:6px;">Consultant code</label><input value="HS-204" style="{{ inputStyle }}" style-focus="border-color:#0066cc;box-shadow:0 0 0 3px rgba(0,102,204,.12);"></div>
+                      </div>
+                      <div style="margin-top: 18px;"><label style="display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:6px;">Project description</label><textarea rows="3" placeholder="Optional notes for this submittal..." style="width:100%;border:1px solid #d4dae1;border-radius:7px;padding:11px 14px;font-size:14px;outline:none;resize:vertical;" style-focus="border-color:#0066cc;box-shadow:0 0 0 3px rgba(0,102,204,.12);"></textarea></div>
+                    </div>
+                  </sc-if>
+
+                  <!-- step 3 -->
+                  <sc-if value="{{ isWizardStep3 }}" hint-placeholder-val="">
+                    <div>
+                      <div style="font-size: 17px; font-weight: 700; color: #1a1a1a; margin-bottom: 3px;">Review template sections</div>
+                      <div style="font-size: 13.5px; color: #8a94a2; margin-bottom: 18px;">Toggle optional sections on or off before generating.</div>
+                      <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <sc-for list="{{ wizReviewSecs }}" as="s" hint-placeholder-count="6">
+                          <div style="display: flex; align-items: center; gap: 13px; border: 1px solid #e6eaef; border-radius: 10px; padding: 13px 16px;">
+                            <div style="flex: 1;"><div style="font-size: 14px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px;">{{ s.name }}</div><div style="display: flex; gap: 8px; align-items: center;"><span style="{{ s.mandatoryStyle }}">{{ s.mandatoryLabel }}</span><span style="font-size: 12px; color: #9aa3ad;">{{ s.docs }} documents</span></div></div>
+                            <div style="width: 42px; height: 24px; border-radius: 13px; padding: 2px; background: #0066cc; display: flex; justify-content: flex-end;"><span style="width: 20px; height: 20px; border-radius: 50%; background: #fff;"></span></div>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </sc-if>
+
+                  <!-- step 4 -->
+                  <sc-if value="{{ isWizardStep4 }}" hint-placeholder-val="">
+                    <div>
+                      <div style="font-size: 17px; font-weight: 700; color: #1a1a1a; margin-bottom: 3px;">Compliance statements</div>
+                      <div style="font-size: 13.5px; color: #8a94a2; margin-bottom: 20px;">Let AI draft compliance statements against the consultant's requirements.</div>
+                      <div style="display: flex; gap: 14px; margin-bottom: 20px;">
+                        <div onClick="{{ setComplianceYes }}" style="{{ compYesStyle }}">
+                          <span style="width: 42px; height: 42px; border-radius: 10px; background: #e8f1fd; color: #0066cc; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">{{ iconSparkle }}</span>
+                          <div style="font-size: 14.5px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px;">Yes, generate with AI</div>
+                          <div style="font-size: 12.5px; color: #8a94a2; line-height: 1.5;">Extract requirements and draft matched compliance statements for review.</div>
+                        </div>
+                        <div onClick="{{ setComplianceNo }}" style="{{ compNoStyle }}">
+                          <span style="width: 42px; height: 42px; border-radius: 10px; background: #eef0f3; color: #6b7685; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">{{ iconShield }}</span>
+                          <div style="font-size: 14.5px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px;">No, skip for now</div>
+                          <div style="font-size: 12.5px; color: #8a94a2; line-height: 1.5;">Generate the package without compliance statements.</div>
+                        </div>
+                      </div>
+                      <sc-if value="{{ wizComplianceYes }}" hint-placeholder-val="{{ true }}">
+                        <div style="background: #f7fafe; border: 1px solid #dbe7f6; border-radius: 11px; padding: 18px;">
+                          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <div><label style="display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:6px;">Requirements document</label><div style="border: 1.5px dashed #c4d3e4; border-radius: 8px; padding: 12px; text-align: center; font-size: 13px; color: #6b8bb5; cursor: pointer; background: #fff;">+ Upload consultant spec</div></div>
+                            <div><label style="display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:6px;">AI model</label><select style="{{ selectStyle }}"><option>Claude 4.5 Sonnet</option><option>GPT-4o</option></select></div>
+                          </div>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-if>
+
+                  <!-- step 5 -->
+                  <sc-if value="{{ isWizardStep5 }}" hint-placeholder-val="">
+                    <div>
+                      <div style="font-size: 17px; font-weight: 700; color: #1a1a1a; margin-bottom: 3px;">Review &amp; generate</div>
+                      <div style="font-size: 13.5px; color: #8a94a2; margin-bottom: 20px;">Confirm the details below, then generate your submittal package.</div>
+                      <div style="border: 1px solid #e6eaef; border-radius: 12px; overflow: hidden;">
+                        <div style="display: flex; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid #f0f2f5;"><span style="font-size: 13px; color: #8a94a2;">Product</span><span style="font-size: 13.5px; font-weight: 600; color: #1a1a1a;">{{ selProductName }}</span></div>
+                        <div style="display: flex; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid #f0f2f5;"><span style="font-size: 13px; color: #8a94a2;">Template</span><span style="font-size: 13.5px; font-weight: 600; color: #1a1a1a;">{{ selTemplateName }}</span></div>
+                        <div style="display: flex; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid #f0f2f5;"><span style="font-size: 13px; color: #8a94a2;">Project</span><span style="font-size: 13.5px; font-weight: 600; color: #1a1a1a;">Marina Bay Tower — Facade · MBT-2026</span></div>
+                        <div style="display: flex; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid #f0f2f5;"><span style="font-size: 13px; color: #8a94a2;">Consultant</span><span style="font-size: 13.5px; font-weight: 600; color: #1a1a1a;">Hassell Studio</span></div>
+                        <div style="display: flex; justify-content: space-between; padding: 14px 18px;"><span style="font-size: 13px; color: #8a94a2;">Compliance</span><span style="font-size: 13.5px; font-weight: 600; color: #0066cc;">{{ complianceSummary }}</span></div>
+                      </div>
+                    </div>
+                  </sc-if>
+
+                  <!-- nav -->
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 26px; padding-top: 20px; border-top: 1px solid #eef1f5;">
+                    <button onClick="{{ wizCancel }}" style="background: none; border: none; color: #8a94a2; font-size: 14px; font-weight: 600; cursor: pointer;">Cancel</button>
+                    <div style="display: flex; gap: 10px;">
+                      <sc-if value="{{ wizCanBack }}" hint-placeholder-val=""><button onClick="{{ wizBack }}" style="{{ secondaryBtn }}" style-hover="background: #f5f7fa;">Back</button></sc-if>
+                      <button onClick="{{ wizNext }}" style="{{ primaryBtn }}; height: 42px; padding: 0 22px;" style-hover="background: #0052a3;">
+                        <sc-if value="{{ wizGenerating }}" hint-placeholder-val=""><span style="width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; display: inline-block; animation: spin .7s linear infinite;"></span></sc-if>
+                        {{ wizNextLabel }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+
+            <!-- success -->
+            <sc-if value="{{ wizardResult }}" hint-placeholder-val="">
+              <div style="max-width: 540px; margin: 40px auto 0; text-align: center; animation: pop .25s ease;">
+                <div style="width: 76px; height: 76px; border-radius: 50%; background: #eaf6ec; color: #28a745; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">{{ iconCheckLg }}</div>
+                <h2 style="font-size: 23px; font-weight: 700; color: #1a1a1a; margin: 0 0 6px;">Submittal generated</h2>
+                <p style="font-size: 14.5px; color: #6b7685; margin: 0 0 26px;">Your submittal package is ready to download and share.</p>
+                <div style="background: #fff; border: 1px solid #e9edf2; border-radius: 14px; padding: 22px; text-align: left; margin-bottom: 24px;">
+                  <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 18px;">
+                    <span style="width: 46px; height: 46px; border-radius: 10px; background: #fdecec; color: #d9534f; display: flex; align-items: center; justify-content: center;">{{ iconFileLg }}</span>
+                    <div><div style="font-size: 15px; font-weight: 700; color: #1a1a1a;">{{ wizardResult.number }}.pdf</div><div style="font-size: 12.5px; color: #9aa3ad;">Marina Bay Tower — Facade</div></div>
+                  </div>
+                  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                    <div style="background: #f7fafc; border-radius: 9px; padding: 12px; text-align: center;"><div style="font-size: 19px; font-weight: 700; color: #1a1a1a;">{{ wizardResult.pages }}</div><div style="font-size: 12px; color: #9aa3ad;">Pages</div></div>
+                    <div style="background: #f7fafc; border-radius: 9px; padding: 12px; text-align: center;"><div style="font-size: 19px; font-weight: 700; color: #1a1a1a;">{{ wizardResult.size }}</div><div style="font-size: 12px; color: #9aa3ad;">File size</div></div>
+                    <div style="background: #f7fafc; border-radius: 9px; padding: 12px; text-align: center;"><div style="font-size: 19px; font-weight: 700; color: #1a1a1a;">{{ wizardResult.time }}</div><div style="font-size: 12px; color: #9aa3ad;">Gen time</div></div>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                  <button onClick="{{ genDownload }}" style="{{ primaryBtn }}; height: 44px; padding: 0 22px;" style-hover="background: #0052a3;">{{ iconDownload }} Download PDF</button>
+                  <button onClick="{{ genViewDetail }}" style="{{ secondaryBtn }}; height: 44px;" style-hover="background: #f5f7fa;">View details</button>
+                  <button onClick="{{ genAnother }}" style="{{ secondaryBtn }}; height: 44px;" style-hover="background: #f5f7fa;">Generate another</button>
+                </div>
+              </div>
+            </sc-if>
+          </section>
+        </sc-if>
+
+        <!-- SUBMITTALS LIST -->
+        <sc-if value="{{ isSubmittals }}" hint-placeholder-val="">
+          <section data-screen-label="Submittals" style="padding: 28px 32px 48px; animation: fadeIn .3s ease;">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 24px;">
+              <div>
+                <h1 style="font-size: 25px; font-weight: 700; color: #1a1a1a; margin: 0 0 4px; letter-spacing: -.02em;">Submittals</h1>
+                <p style="font-size: 14.5px; color: #6b7685; margin: 0;">Every generated submittal package across your projects.</p>
+              </div>
+              <button onClick="{{ openWizard }}" style="{{ primaryBtn }}" style-hover="background: #0052a3;">{{ iconPlus }} New Submittal</button>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 18px;">
+              <div style="position: relative; flex: 1; max-width: 380px;">
+                <span style="position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: #9aa3ad;">{{ iconSearch }}</span>
+                <input placeholder="Search submittals..." style="width: 100%; height: 40px; background: #fff; border: 1px solid #e0e5ec; border-radius: 8px; padding: 0 14px 0 40px; font-size: 14px; outline: none;" style-focus="border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,.10);">
+              </div>
+              <button style="{{ secondaryBtn }}" style-hover="background: #f5f7fa;">{{ iconFilter }} Status</button>
+            </div>
+
+            <div style="background: #fff; border: 1px solid #e9edf2; border-radius: 12px; overflow: hidden;">
+              <table style="width: 100%; border-collapse: collapse;">
+                <thead><tr style="background: #fafbfc;">
+                  <th style="{{ thStyle }}">Submittal</th><th style="{{ thStyle }}">Product</th><th style="{{ thStyle }}">Consultant</th><th style="{{ thStyle }}">Project</th><th style="{{ thStyle }}">Status</th><th style="{{ thStyle }}">Pages</th><th style="{{ thStyle }}">Generated</th><th style="{{ thStyle }}; text-align: right;"></th>
+                </tr></thead>
+                <tbody>
+                  <sc-for list="{{ allSubmittals }}" as="s" hint-placeholder-count="8">
+                    <tr onClick="{{ s.open }}" style="border-top: 1px solid #f0f2f5; cursor: pointer;" style-hover="background: #f8fafc;">
+                      <td style="{{ tdStyle }}; font-weight: 600; color: #0066cc;">{{ s.number }}</td>
+                      <td style="{{ tdStyle }}">{{ s.product }}</td>
+                      <td style="{{ tdStyle }}; color: #6b7685;">{{ s.consultant }}</td>
+                      <td style="{{ tdStyle }}; color: #6b7685;">{{ s.project }}</td>
+                      <td style="{{ tdStyle }}"><span style="{{ s.badge }}">{{ s.status }}</span></td>
+                      <td style="{{ tdStyle }}; color: #6b7685;">{{ s.pages }}</td>
+                      <td style="{{ tdStyle }}; color: #6b7685;">{{ s.date }}</td>
+                      <td style="{{ tdStyle }}; text-align: right;"><button onClick="{{ s.download }}" title="Download" style="{{ iconBtnStyle }}" style-hover="background: #eef2f7; color: #0066cc;">{{ iconDownload }}</button></td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </sc-if>
+
+        <!-- PROFILE -->
+        <sc-if value="{{ isProfile }}" hint-placeholder-val="">
+          <section data-screen-label="Profile" style="padding: 28px 32px 48px; animation: fadeIn .3s ease;">
+            <div style="max-width: 820px;">
+              <h1 style="font-size: 25px; font-weight: 700; color: #1a1a1a; margin: 0 0 22px; letter-spacing: -.02em;">My Profile</h1>
+              <div style="display: flex; gap: 28px; border-bottom: 1px solid #e6eaef; margin-bottom: 26px;">
+                <sc-for list="{{ profileTabs }}" as="pt" hint-placeholder-count="4"><div onClick="{{ pt.set }}" style="{{ pt.style }}">{{ pt.label }}</div></sc-for>
+              </div>
+
+              <sc-if value="{{ profTabProfile }}" hint-placeholder-val="{{ true }}">
+                <div style="display: flex; gap: 18px; align-items: center; margin-bottom: 28px;">
+                  <div style="width: 76px; height: 76px; border-radius: 50%; background: #0066cc; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 28px;">SC</div>
+                  <div><button style="{{ secondaryBtn }}" style-hover="background: #f5f7fa;">Change photo</button><div style="font-size: 12.5px; color: #9aa3ad; margin-top: 7px;">JPG or PNG, max 2 MB</div></div>
+                </div>
+                <div style="background: #fff; border: 1px solid #e9edf2; border-radius: 12px; padding: 24px;">
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+                    <div><label style="display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:6px;">Full name</label><input value="Sarah Chen" style="{{ inputStyle }}" style-focus="border-color:#0066cc;box-shadow:0 0 0 3px rgba(0,102,204,.12);"></div>
+                    <div><label style="display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:6px;">Username</label><input value="schen" readonly style="width:100%;height:44px;border:1px solid #e6eaef;background:#f7f9fb;border-radius:6px;padding:0 14px;font-size:14.5px;color:#6b7685;outline:none;"></div>
+                    <div><label style="display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:6px;">Email</label><input value="sarah.chen@acmebuild.com" style="{{ inputStyle }}" style-focus="border-color:#0066cc;box-shadow:0 0 0 3px rgba(0,102,204,.12);"></div>
+                    <div><label style="display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:6px;">Phone</label><input value="+1 (415) 555-0182" style="{{ inputStyle }}" style-focus="border-color:#0066cc;box-shadow:0 0 0 3px rgba(0,102,204,.12);"></div>
+                    <div><label style="display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:6px;">Department</label><input value="Submittals & Compliance" style="{{ inputStyle }}" style-focus="border-color:#0066cc;box-shadow:0 0 0 3px rgba(0,102,204,.12);"></div>
+                    <div><label style="display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:6px;">Role</label><div style="height: 44px; display: flex; align-items: center;"><span style="display:inline-block;font-size:12.5px;font-weight:600;padding:4px 12px;border-radius:20px;background:#e8f1fd;color:#0066cc;">Operator</span></div></div>
+                  </div>
+                  <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; padding-top: 20px; border-top: 1px solid #eef1f5;">
+                    <button style="{{ secondaryBtn }}" style-hover="background: #f5f7fa;">Cancel</button>
+                    <button onClick="{{ saveProfile }}" style="{{ primaryBtn }}" style-hover="background: #0052a3;">Save changes</button>
+                  </div>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ profTabSecurity }}" hint-placeholder-val="">
+                <div style="background: #fff; border: 1px solid #e9edf2; border-radius: 12px; padding: 24px; margin-bottom: 18px;">
+                  <div style="font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 16px;">Change password</div>
+                  <div style="display: grid; gap: 16px; max-width: 420px;">
+                    <div><label style="display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:6px;">Current password</label><input type="password" value="········" style="{{ inputStyle }}" style-focus="border-color:#0066cc;box-shadow:0 0 0 3px rgba(0,102,204,.12);"></div>
+                    <div><label style="display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:6px;">New password</label><input type="password" placeholder="At least 8 characters" style="{{ inputStyle }}" style-focus="border-color:#0066cc;box-shadow:0 0 0 3px rgba(0,102,204,.12);"></div>
+                  </div>
+                  <button onClick="{{ savePassword }}" style="{{ primaryBtn }}; margin-top: 18px;" style-hover="background: #0052a3;">Update password</button>
+                </div>
+                <div style="background: #fff; border: 1px solid #e9edf2; border-radius: 12px; padding: 24px;">
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div><div style="font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 3px;">Two-factor authentication</div><div style="font-size: 13px; color: #8a94a2;">Add an extra layer of security at sign-in.</div></div>
+                    <button style="{{ primaryBtn }}" style-hover="background: #0052a3;">Enable 2FA</button>
+                  </div>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ profTabPrefs }}" hint-placeholder-val="">
+                <div style="background: #fff; border: 1px solid #e9edf2; border-radius: 12px; padding: 8px 24px;">
+                  <sc-for list="{{ prefRows }}" as="p" hint-placeholder-count="4">
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid #f0f2f5;">
+                      <div><div style="font-size: 14px; font-weight: 600; color: #1a1a1a;">{{ p.label }}</div><div style="font-size: 12.5px; color: #8a94a2;">{{ p.desc }}</div></div>
+                      <div onClick="{{ p.toggle }}" style="{{ p.toggleStyle }}"><span style="width: 20px; height: 20px; border-radius: 50%; background: #fff;"></span></div>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ profTabNotif }}" hint-placeholder-val="">
+                <div style="background: #fff; border: 1px solid #e9edf2; border-radius: 12px; padding: 8px 24px;">
+                  <sc-for list="{{ notifRows }}" as="p" hint-placeholder-count="4">
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid #f0f2f5;">
+                      <div><div style="font-size: 14px; font-weight: 600; color: #1a1a1a;">{{ p.label }}</div><div style="font-size: 12.5px; color: #8a94a2;">{{ p.desc }}</div></div>
+                      <div onClick="{{ p.toggle }}" style="{{ p.toggleStyle }}"><span style="width: 20px; height: 20px; border-radius: 50%; background: #fff;"></span></div>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+          </section>
+        </sc-if>
+
+        <div data-screens-end="1"></div>
+      </main>
+    </div>
+  </div>
+
+  <!-- DETAIL SLIDE-OVER -->
+  <sc-if value="{{ detailOpen }}" hint-placeholder-val="">
+    <div style="position: fixed; inset: 0; z-index: 110;">
+      <div onClick="{{ closeDetail }}" style="position: absolute; inset: 0; background: rgba(18,28,42,.42); animation: fadeIn .18s ease;"></div>
+      <div style="position: absolute; top: 0; right: 0; bottom: 0; width: 540px; max-width: 100%; background: #f7f9fc; box-shadow: -12px 0 40px rgba(10,25,50,.18); display: flex; flex-direction: column; animation: slideIn .25s ease;">
+        <div style="background: #fff; border-bottom: 1px solid #e6eaef; padding: 20px 24px;">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 4px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 18px; font-weight: 700; color: #1a1a1a;">{{ detail.number }}</span>
+              <span style="{{ detailBadge }}">{{ detail.status }}</span>
+            </div>
+            <button onClick="{{ closeDetail }}" style="width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border: none; background: transparent; border-radius: 8px; color: #8a94a2; cursor: pointer;" style-hover="background: #f1f5f9;">{{ iconX }}</button>
+          </div>
+          <div style="font-size: 13.5px; color: #6b7685; margin-bottom: 16px;">{{ detail.product }} · {{ detail.project }}</div>
+          <div style="display: flex; gap: 24px; border-bottom: 1px solid #eef1f5; margin: 0 -24px; padding: 0 24px;">
+            <div onClick="{{ tabOverview }}" style="{{ tabOverviewStyle }}">Overview</div>
+            <div onClick="{{ tabFiles }}" style="{{ tabFilesStyle }}">Files</div>
+            <div onClick="{{ tabCompliance }}" style="{{ tabComplianceStyle }}">Compliance</div>
+            <div onClick="{{ tabAudit }}" style="{{ tabAuditStyle }}">Audit</div>
+          </div>
+        </div>
+
+        <div style="flex: 1; overflow: auto; padding: 22px 24px;">
+          <sc-if value="{{ detailTabOverview }}" hint-placeholder-val="{{ true }}">
+            <div style="background: #fff; border: 1px solid #e9edf2; border-radius: 12px; padding: 4px 18px;">
+              <sc-for list="{{ overviewRows }}" as="r" hint-placeholder-count="7">
+                <div style="display: flex; justify-content: space-between; padding: 13px 0; border-bottom: 1px solid #f2f4f7;"><span style="font-size: 13px; color: #8a94a2;">{{ r.k }}</span><span style="font-size: 13.5px; font-weight: 600; color: #1a1a1a; text-align: right;">{{ r.v }}</span></div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ detailTabFiles }}" hint-placeholder-val="">
+            <button onClick="{{ genDownload }}" style="{{ primaryBtn }}; width: 100%; height: 44px; justify-content: center; margin-bottom: 16px;" style-hover="background: #0052a3;">{{ iconDownload }} Download full package (PDF)</button>
+            <sc-for list="{{ detailFiles }}" as="f" hint-placeholder-count="4">
+              <div style="display: flex; align-items: center; gap: 13px; background: #fff; border: 1px solid #e9edf2; border-radius: 10px; padding: 13px 15px; margin-bottom: 10px;">
+                <span style="width: 36px; height: 36px; border-radius: 8px; background: #f1f5f9; color: #6b7685; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">{{ iconDoc }}</span>
+                <div style="flex: 1;"><div style="font-size: 13.5px; font-weight: 600; color: #1a1a1a;">{{ f.name }}</div><div style="font-size: 12px; color: #9aa3ad;">{{ f.meta }}</div></div>
+                <button onClick="{{ f.download }}" style="{{ iconBtnStyle }}" style-hover="background: #eef2f7; color: #0066cc;">{{ iconDownload }}</button>
+              </div>
+            </sc-for>
+          </sc-if>
+          <sc-if value="{{ detailTabCompliance }}" hint-placeholder-val="">
+            <sc-for list="{{ complianceItems }}" as="c" hint-placeholder-count="3">
+              <div style="background: #fff; border: 1px solid #e9edf2; border-radius: 11px; padding: 16px; margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; gap: 12px; margin-bottom: 9px;">
+                  <div style="font-size: 13px; font-weight: 700; color: #1a1a1a; line-height: 1.4;">{{ c.req }}</div>
+                  <span style="font-size: 12px; font-weight: 700; color: {{ c.scoreColor }}; background: {{ c.scoreBg }}; padding: 3px 9px; border-radius: 6px; height: fit-content; white-space: nowrap;">{{ c.score }}%</span>
+                </div>
+                <div style="font-size: 13px; color: #4a5563; line-height: 1.55; background: #f7f9fc; border-left: 3px solid #0066cc; border-radius: 0 6px 6px 0; padding: 10px 13px;">{{ c.text }}</div>
+              </div>
+            </sc-for>
+          </sc-if>
+          <sc-if value="{{ detailTabAudit }}" hint-placeholder-val="">
+            <div style="padding-left: 6px;">
+              <sc-for list="{{ auditItems }}" as="a" hint-placeholder-count="4">
+                <div style="display: flex; gap: 14px; padding-bottom: 18px; position: relative;">
+                  <div style="display: flex; flex-direction: column; align-items: center;"><span style="width: 12px; height: 12px; border-radius: 50%; background: {{ a.color }}; flex-shrink: 0; margin-top: 3px;"></span><span style="flex: 1; width: 2px; background: #e6eaef; margin-top: 4px;"></span></div>
+                  <div style="padding-bottom: 4px;"><div style="font-size: 13.5px; font-weight: 600; color: #1a1a1a;">{{ a.action }}</div><div style="font-size: 12.5px; color: #8a94a2; margin-top: 2px;">{{ a.who }} · {{ a.when }}</div></div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- UPLOAD MODAL -->
+  <sc-if value="{{ uploadOpen }}" hint-placeholder-val="">
+    <div style="position: fixed; inset: 0; background: rgba(18,28,42,.5); display: flex; align-items: center; justify-content: center; z-index: 120; animation: fadeIn .18s ease; padding: 24px;">
+      <div style="width: 600px; max-width: 100%; background: #fff; border-radius: 14px; box-shadow: 0 24px 60px rgba(10,25,50,.3); animation: pop .2s ease; max-height: 92vh; overflow: auto;">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid #eef1f5;">
+          <div style="font-size: 17px; font-weight: 700; color: #1a1a1a;">Upload Document</div>
+          <button onClick="{{ closeUpload }}" style="width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border: none; background: transparent; border-radius: 8px; color: #8a94a2; cursor: pointer;" style-hover="background: #f1f5f9;">{{ iconX }}</button>
+        </div>
+        <div style="padding: 24px;">
+          <sc-if value="{{ uploadDone }}" hint-placeholder-val="">
+            <div style="text-align: center; padding: 30px 0;">
+              <div style="width: 64px; height: 64px; border-radius: 50%; background: #eaf6ec; color: #28a745; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">{{ iconCheck }}</div>
+              <div style="font-size: 18px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px;">Upload complete</div>
+              <div style="font-size: 14px; color: #6b7685;">Your document has been added to the library.</div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ uploadIdle }}" hint-placeholder-val="{{ true }}">
+            <div onClick="{{ pickFile }}" style="border: 2px dashed #c4d3e4; border-radius: 12px; padding: 38px 24px; text-align: center; cursor: pointer; background: #f7fafe; transition: border-color .15s, background .15s;" style-hover="border-color: #0066cc; background: #f0f6fe;">
+              <div style="width: 56px; height: 56px; border-radius: 14px; background: #e8f1fd; color: #0066cc; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">{{ iconUploadLg }}</div>
+              <div style="font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px;">Drag &amp; drop a PDF, or click to browse</div>
+              <div style="font-size: 13px; color: #9aa3ad;">PDF only · up to 50 MB</div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ uploadSelected }}" hint-placeholder-val="">
+            <div>
+              <div style="display: flex; align-items: center; gap: 13px; background: #f7fafe; border: 1px solid #dbe7f6; border-radius: 10px; padding: 13px 15px; margin-bottom: 20px;">
+                <span style="width: 40px; height: 40px; border-radius: 9px; background: #fdecec; color: #d9534f; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">{{ iconDoc }}</span>
+                <div style="flex: 1;"><div style="font-size: 14px; font-weight: 600; color: #1a1a1a;">AcoustiClad-50mm-Datasheet-v3.3.pdf</div><div style="font-size: 12.5px; color: #9aa3ad;">2.6 MB · PDF</div></div>
+                <span style="color: #28a745;">{{ iconCheck }}</span>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div><label style="display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 6px;">Product <span style="color:#dc3545;">*</span></label>
+                  <select style="{{ selectStyle }}"><option>AcoustiClad 50mm Panel</option><option>ThermoBlock R8 Insulation</option><option>FireGuard FR Door Set</option></select></div>
+                <div><label style="display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 6px;">Document type <span style="color:#dc3545;">*</span></label>
+                  <select style="{{ selectStyle }}"><option>Datasheet</option><option>Certificate</option><option>Manual</option><option>Catalogue</option><option>Compliance Document</option></select></div>
+              </div>
+              <div style="margin-bottom: 16px;"><label style="display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 6px;">Document title <span style="color:#dc3545;">*</span></label>
+                <input value="AcoustiClad 50mm — Technical Datasheet" style="width:100%;height:42px;border:1px solid #d4dae1;border-radius:7px;padding:0 12px;font-size:14px;outline:none;" style-focus="border-color:#0066cc;box-shadow:0 0 0 3px rgba(0,102,204,.12);"></div>
+              <div style="display: flex; align-items: center; justify-content: space-between; background: #f7fafe; border-radius: 8px; padding: 11px 14px;">
+                <div><div style="font-size: 13.5px; font-weight: 600; color: #374151;">Version</div><div style="font-size: 12px; color: #9aa3ad;">Auto-incremented from existing</div></div>
+                <span style="font-size: 13px; font-weight: 600; color: #0066cc; background: #e8f1fd; padding: 3px 10px; border-radius: 6px;">v3.3 (new)</span>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+        <sc-if value="{{ uploadNotDone }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; justify-content: flex-end; gap: 10px; padding: 16px 24px; border-top: 1px solid #eef1f5;">
+            <button onClick="{{ closeUpload }}" style="{{ secondaryBtn }}" style-hover="background: #f5f7fa;">Cancel</button>
+            <button onClick="{{ submitUpload }}" style="{{ primaryBtn }}" style-hover="background: #0052a3;">
+              <sc-if value="{{ uploading }}" hint-placeholder-val=""><span style="width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; display: inline-block; animation: spin .7s linear infinite;"></span></sc-if>
+              {{ uploadBtnLabel }}
+            </button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- TOAST -->
+  <sc-if value="{{ toast }}" hint-placeholder-val="">
+    <div style="position: fixed; bottom: 26px; right: 26px; background: #1a2330; color: #fff; padding: 13px 18px; border-radius: 10px; font-size: 14px; font-weight: 500; box-shadow: 0 12px 32px rgba(20,40,70,.28); display: flex; align-items: center; gap: 10px; z-index: 200; animation: slideIn .25s ease;">
+      <span style="color: #5fd07a;">{{ iconCheckCircle }}</span>{{ toast }}
+    </div>
+  </sc-if>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:860}}">
+class Component extends DCLogic {
+  state = {
+    loggedIn: false,
+    authView: 'login',
+    authLoading: false,
+    authError: '',
+    showPwd: false,
+    remember: true,
+    resetSent: false,
+    pwdStrength: 0,
+    route: 'dashboard',
+    userMenuOpen: false,
+    docView: 'list',
+    docFilter: 'all',
+    uploadOpen: false,
+    uploadFile: null,
+    uploadStage: 'idle',
+    templateView: 'grid',
+    builderSections: null,
+    dragIndex: null,
+    selectedBuilder: 0,
+    wizardOpen: false,
+    wizardStep: 1,
+    wizardProduct: 0,
+    wizardTemplate: 0,
+    wizardCompliance: true,
+    wizardGenerating: false,
+    genResult: null,
+    detailOpen: false,
+    detail: null,
+    detailTab: 'overview',
+    profileTab: 'profile',
+    toggles: { darkSidebar: false, rememberFilters: true, gridDefault: false, emailGen: true, emailReview: true, weeklyDigest: false, securityAlerts: true },
+    toast: null,
+  };
+
+  // ---------- icons ----------
+  ic(paths, opts) {
+    opts = opts || {};
+    const size = opts.size || 19;
+    return React.createElement('svg', { width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: opts.sw || 1.7, strokeLinecap: 'round', strokeLinejoin: 'round', style: { display: 'block' } },
+      paths.map((d, i) => d.c
+        ? React.createElement('circle', { key: i, cx: d.cx, cy: d.cy, r: d.r })
+        : (d.rect ? React.createElement('rect', { key: i, x: d.x, y: d.y, width: d.w, height: d.h, rx: d.rx })
+          : (d.line ? React.createElement('line', { key: i, x1: d.x1, y1: d.y1, x2: d.x2, y2: d.y2 })
+            : React.createElement('path', { key: i, d })))));
+  }
+  get icons() {
+    return {
+      mail: [{ rect: 1, x: 3, y: 5, w: 18, h: 14, rx: 2 }, 'm3 7 9 6 9-6'],
+      lock: [{ rect: 1, x: 5, y: 11, w: 14, h: 9, rx: 2 }, 'M8 11V7a4 4 0 0 1 8 0v4'],
+      eye: ['M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z', { c: 1, cx: 12, cy: 12, r: 3 }],
+      search: [{ c: 1, cx: 11, cy: 11, r: 7 }, 'm21 21-4-4'],
+      bell: ['M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6', 'M10 19a2 2 0 0 0 4 0'],
+      plus: [{ line: 1, x1: 12, y1: 5, x2: 12, y2: 19 }, { line: 1, x1: 5, y1: 12, x2: 19, y2: 12 }],
+      chevron: ['m6 9 6 6 6-6'],
+      chevronR: ['m9 6 6 6-6 6'],
+      user: [{ c: 1, cx: 12, cy: 8, r: 4 }, 'M5 21a7 7 0 0 1 14 0'],
+      settings: [{ c: 1, cx: 12, cy: 12, r: 3 }, 'M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 0 1-4 0v-.1A1.6 1.6 0 0 0 7 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H1a2 2 0 0 1 0-4h.1A1.6 1.6 0 0 0 2.6 7a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H7a1.6 1.6 0 0 0 1-1.5V1a2 2 0 0 1 4 0v.1A1.6 1.6 0 0 0 17 2.6a1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V7a1.6 1.6 0 0 0 1.5 1H23a2 2 0 0 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z'],
+      logout: ['M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4', 'm16 17 5-5-5-5', { line: 1, x1: 21, y1: 12, x2: 9, y2: 12 }],
+      grid: [{ rect: 1, x: 3, y: 3, w: 7, h: 7, rx: 1 }, { rect: 1, x: 14, y: 3, w: 7, h: 7, rx: 1 }, { rect: 1, x: 3, y: 14, w: 7, h: 7, rx: 1 }, { rect: 1, x: 14, y: 14, w: 7, h: 7, rx: 1 }],
+      doc: ['M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z', 'M14 3v6h6', { line: 1, x1: 9, y1: 13, x2: 15, y2: 13 }, { line: 1, x1: 9, y1: 17, x2: 13, y2: 17 }],
+      layers: ['m12 2 9 5-9 5-9-5 9-5z', 'm3 12 9 5 9-5', 'm3 17 9 5 9-5'],
+      stack: ['M9 11H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-4', 'M9 7V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v3', 'm9 14 2 2 4-4'],
+      upload: ['M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4', 'm17 8-5-5-5 5', { line: 1, x1: 12, y1: 3, x2: 12, y2: 15 }],
+      download: ['M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4', 'm7 10 5 5 5-5', { line: 1, x1: 12, y1: 15, x2: 12, y2: 3 }],
+      eye2: ['M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z', { c: 1, cx: 12, cy: 12, r: 3 }],
+      edit: ['M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7', 'M18.5 2.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4z'],
+      trash: ['M3 6h18', 'M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'],
+      copy: [{ rect: 1, x: 9, y: 9, w: 12, h: 12, rx: 2 }, 'M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'],
+      dots: [{ c: 1, cx: 12, cy: 5, r: 1 }, { c: 1, cx: 12, cy: 12, r: 1 }, { c: 1, cx: 12, cy: 19, r: 1 }],
+      history: ['M3 3v5h5', 'M3.05 13A9 9 0 1 0 6 5.3L3 8', 'M12 7v5l4 2'],
+      checkCircle: ['M22 11.08V12a10 10 0 1 1-5.93-9.14', 'm22 4-10 10.01-3-3'],
+      check: ['m20 6-9 11-5-5'],
+      x: ['M18 6 6 18', 'M6 6l12 12'],
+      drag: [{ c: 1, cx: 9, cy: 6, r: 1 }, { c: 1, cx: 15, cy: 6, r: 1 }, { c: 1, cx: 9, cy: 12, r: 1 }, { c: 1, cx: 15, cy: 12, r: 1 }, { c: 1, cx: 9, cy: 18, r: 1 }, { c: 1, cx: 15, cy: 18, r: 1 }],
+      filter: ['M22 3H2l8 9.46V19l4 2v-8.54z'],
+      file: ['M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z', 'M14 3v6h6'],
+      shield: ['M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5z', 'm9 12 2 2 4-4'],
+      clock: [{ c: 1, cx: 12, cy: 12, r: 9 }, 'M12 7v5l3 2'],
+      sparkle: ['M12 3v4', 'M12 17v4', 'M3 12h4', 'M17 12h4', 'm6 6 2.5 2.5', 'm15.5 15.5 2.5 2.5', 'm18 6-2.5 2.5', 'm8.5 15.5-2.5 2.5'],
+    };
+  }
+  I(name, opts) { return this.ic(this.icons[name], opts); }
+
+  // ---------- data ----------
+  componentDidMount() {
+    this.setState({ builderSections: this.defaultBuilder.slice() });
+  }
+  get defaultBuilder() {
+    return [
+      { id: 's1', name: 'Cover Page & Company Profile', type: 'Company Info', docs: 2, mandatory: true },
+      { id: 's2', name: 'Product Datasheet', type: 'Product Details', docs: 1, mandatory: true },
+      { id: 's3', name: 'Technical Specifications', type: 'Product Details', docs: 3, mandatory: false },
+      { id: 's4', name: 'Compliance Statements', type: 'Compliance', docs: 1, mandatory: true },
+      { id: 's5', name: 'Material Certificates', type: 'Compliance', docs: 4, mandatory: false },
+      { id: 's6', name: 'Warranty & Maintenance', type: 'Custom', docs: 1, mandatory: false },
+    ];
+  }
+  get availableSections() {
+    return [
+      { id: 'a1', name: 'Vendor List', type: 'Company Info' },
+      { id: 'a2', name: 'Installation Manual', type: 'Product Details' },
+      { id: 'a3', name: 'Test Reports', type: 'Compliance' },
+      { id: 'a4', name: 'Drawings & Schematics', type: 'Custom' },
+    ];
+  }
+  get kpiData() {
+    return [
+      { icon: 'stack', iconBg: '#e8f1fd', iconColor: '#0066cc', value: '47', label: 'Submittals this month', trend: '+18%', trendColor: '#1e7a32', trendBg: '#eaf6ec' },
+      { icon: 'doc', iconBg: '#fdf0e9', iconColor: '#ff6b35', value: '1,284', label: 'Documents in library', trend: '+64', trendColor: '#1e7a32', trendBg: '#eaf6ec' },
+      { icon: 'layers', iconBg: '#f0ecfd', iconColor: '#6b4ed8', value: '38', label: 'Templates created', trend: '+3', trendColor: '#1e7a32', trendBg: '#eaf6ec' },
+      { icon: 'shield', iconBg: '#fef6e7', iconColor: '#d9920a', value: '12', label: 'Compliance pending', trend: 'Review', trendColor: '#b8860b', trendBg: '#fef6e7' },
+    ];
+  }
+  get submittalsData() {
+    return [
+      { id: 1, number: 'SUB-2026-0147', product: 'AcoustiClad 50mm Panel', consultant: 'Hassell Studio', project: 'Marina Bay Tower — Facade', status: 'Approved', pages: 42, date: 'Jun 26, 2026' },
+      { id: 2, number: 'SUB-2026-0146', product: 'ThermoBlock R8 Insulation', consultant: 'Aurecon', project: 'Westside Logistics Hub', status: 'Generated', pages: 31, date: 'Jun 25, 2026' },
+      { id: 3, number: 'SUB-2026-0145', product: 'FireGuard FR Door Set', consultant: 'WSP Group', project: 'Central Hospital Wing C', status: 'Reviewed', pages: 58, date: 'Jun 24, 2026' },
+      { id: 4, number: 'SUB-2026-0144', product: 'AquaSeal Membrane 1.2mm', consultant: 'Mott MacDonald', project: 'Riverside Residences', status: 'Draft', pages: 18, date: 'Jun 23, 2026' },
+      { id: 5, number: 'SUB-2026-0143', product: 'SteelSpan Composite Deck', consultant: 'Arup', project: 'Airport Terminal 4', status: 'Approved', pages: 67, date: 'Jun 21, 2026' },
+      { id: 6, number: 'SUB-2026-0142', product: 'EcoGlaze Curtain Wall', consultant: 'Hassell Studio', project: 'Greenfield Office Park', status: 'Generated', pages: 49, date: 'Jun 20, 2026' },
+      { id: 7, number: 'SUB-2026-0141', product: 'AcoustiClad 50mm Panel', consultant: 'Aurecon', project: 'Civic Centre Atrium', status: 'Archived', pages: 38, date: 'Jun 18, 2026' },
+      { id: 8, number: 'SUB-2026-0140', product: 'ThermoBlock R8 Insulation', consultant: 'WSP Group', project: 'Northgate Mixed Use', status: 'Approved', pages: 27, date: 'Jun 17, 2026' },
+    ];
+  }
+  get documentsData() {
+    return [
+      { id: 1, name: 'AcoustiClad 50mm — Technical Datasheet', type: 'Datasheet', product: 'AcoustiClad 50mm Panel', version: 'v3.2', size: '2.4 MB', by: 'Sarah Chen', date: 'Jun 24, 2026' },
+      { id: 2, name: 'ISO 9001:2015 Certificate', type: 'Certificate', product: 'Company-wide', version: 'v1.0', size: '480 KB', by: 'Mark Reyes', date: 'Jun 20, 2026' },
+      { id: 3, name: 'FireGuard FR — Fire Test Report EN 1634', type: 'Compliance', product: 'FireGuard FR Door Set', version: 'v2.1', size: '5.1 MB', by: 'Sarah Chen', date: 'Jun 19, 2026' },
+      { id: 4, name: 'ThermoBlock R8 — Installation Manual', type: 'Manual', product: 'ThermoBlock R8 Insulation', version: 'v1.4', size: '3.8 MB', by: 'Lena Ortiz', date: 'Jun 15, 2026' },
+      { id: 5, name: 'AquaSeal Membrane — Product Catalogue 2026', type: 'Catalogue', product: 'AquaSeal Membrane 1.2mm', version: 'v2.0', size: '12.6 MB', by: 'Mark Reyes', date: 'Jun 12, 2026' },
+      { id: 6, name: 'Approved Vendor List — Q2 2026', type: 'Vendor List', product: 'Company-wide', version: 'v4.1', size: '210 KB', by: 'Sarah Chen', date: 'Jun 10, 2026' },
+      { id: 7, name: 'SteelSpan Composite Deck — Datasheet', type: 'Datasheet', product: 'SteelSpan Composite Deck', version: 'v1.1', size: '1.9 MB', by: 'Lena Ortiz', date: 'Jun 8, 2026' },
+      { id: 8, name: 'CE Marking Declaration of Performance', type: 'Compliance', product: 'EcoGlaze Curtain Wall', version: 'v1.0', size: '720 KB', by: 'Mark Reyes', date: 'Jun 5, 2026' },
+    ];
+  }
+  get templatesData() {
+    return [
+      { id: 1, name: 'Standard Facade Submittal', product: 'AcoustiClad 50mm Panel', consultant: 'Hassell Studio', type: 'Consultant-specific', sections: 8, modified: 'Jun 26, 2026', status: 'Active' },
+      { id: 2, name: 'Insulation — Generic Package', product: 'ThermoBlock R8', consultant: '—', type: 'Generic', sections: 6, modified: 'Jun 22, 2026', status: 'Active' },
+      { id: 3, name: 'Fire-Rated Assembly Pack', product: 'FireGuard FR Door Set', consultant: 'WSP Group', type: 'Consultant-specific', sections: 11, modified: 'Jun 19, 2026', status: 'Active' },
+      { id: 4, name: 'Waterproofing Submittal', product: 'AquaSeal Membrane', consultant: 'Mott MacDonald', type: 'Custom', sections: 7, modified: 'Jun 14, 2026', status: 'Draft' },
+      { id: 5, name: 'Structural Deck Package', product: 'SteelSpan Composite', consultant: 'Arup', type: 'Consultant-specific', sections: 9, modified: 'Jun 11, 2026', status: 'Active' },
+      { id: 6, name: 'Curtain Wall — Generic', product: 'EcoGlaze', consultant: '—', type: 'Generic', sections: 6, modified: 'Jun 4, 2026', status: 'Inactive' },
+    ];
+  }
+
+  // ---------- helpers ----------
+  toast(msg) {
+    this.setState({ toast: msg });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ toast: null }), 2600);
+  }
+  badgeFor(status) {
+    const map = {
+      Approved: ['#eaf6ec', '#1e7a32'], Generated: ['#e8f1fd', '#0066cc'], Reviewed: ['#f0ecfd', '#6b4ed8'],
+      Draft: ['#fef0e6', '#c2620f'], Archived: ['#eef0f3', '#6b7685'], Active: ['#eaf6ec', '#1e7a32'], Inactive: ['#eef0f3', '#6b7685'],
+    };
+    const c = map[status] || ['#eef0f3', '#6b7685'];
+    return `display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;background:${c[0]};color:${c[1]};`;
+  }
+  typeBadge(type) {
+    const map = {
+      Datasheet: ['#e8f1fd', '#0066cc'], Certificate: ['#eaf6ec', '#1e7a32'], Compliance: ['#fdf0e9', '#c2620f'],
+      Manual: ['#f0ecfd', '#6b4ed8'], Catalogue: ['#e7f6f7', '#0a8a93'], 'Vendor List': ['#fdf2f7', '#bd2a72'],
+      Generic: ['#eef0f3', '#5a6573'], 'Consultant-specific': ['#e8f1fd', '#0066cc'], Custom: ['#f0ecfd', '#6b4ed8'],
+    };
+    const c = map[type] || ['#eef0f3', '#6b7685'];
+    return `display:inline-block;font-size:11.5px;font-weight:600;padding:2px 9px;border-radius:5px;background:${c[0]};color:${c[1]};`;
+  }
+
+  // ---------- nav / auth handlers ----------
+  go(route) { this.setState({ route, userMenuOpen: false, detailOpen: false }); window.scrollTo(0, 0); }
+  doLogin = () => {
+    this.setState({ authLoading: true, authError: '' });
+    setTimeout(() => this.setState({ authLoading: false, loggedIn: true }), 850);
+  };
+  doLogout = () => this.setState({ loggedIn: false, authView: 'login', userMenuOpen: false });
+  doReset = () => this.setState({ resetSent: true });
+  onPwdInput = (e) => {
+    const v = e.target.value; let s = 0;
+    if (v.length >= 8) s++; if (/[A-Z]/.test(v)) s++; if (/[0-9]/.test(v)) s++; if (/[^A-Za-z0-9]/.test(v)) s++;
+    this.setState({ pwdStrength: s });
+  };
+
+  // ---------- screen builders fill in later ----------
+
+  renderVals() {
+    const st = this.state;
+    const I = (n, o) => this.I(n, o);
+    const route = st.route;
+
+    // nav
+    const navDefs = [
+      { key: 'dashboard', label: 'Dashboard', icon: 'grid' },
+      { key: 'documents', label: 'Documents', icon: 'doc', count: '1.2k', badge: ['#eef0f3', '#6b7685'] },
+      { key: 'templates', label: 'Templates', icon: 'layers' },
+      { key: 'submittals', label: 'Submittals', icon: 'stack', count: '47', badge: ['#e8f1fd', '#0066cc'] },
+    ];
+    const navItems = navDefs.map(n => {
+      const active = route === n.key || (n.key === 'templates' && route === 'builder') || (n.key === 'submittals' && route === 'submittals');
+      return {
+        label: n.label, icon: I(n.icon), go: () => this.go(n.key),
+        count: n.count || '', badgeBg: n.badge ? n.badge[0] : '#eef0f3', badgeColor: n.badge ? n.badge[1] : '#6b7685',
+        style: `display:flex;align-items:center;gap:11px;padding:9px 11px;margin-bottom:3px;border-radius:8px;font-size:14px;font-weight:${active ? 600 : 500};cursor:pointer;color:${active ? '#0066cc' : '#4a5563'};background:${active ? '#e8f1fd' : 'transparent'};`,
+      };
+    });
+
+    // kpis
+    const kpis = this.kpiData.map(k => ({ ...k, icon: I(k.icon) }));
+
+    // chart bars
+    const heights = [38, 52, 30, 64, 48, 72, 58, 44, 80, 62, 90, 70, 84, 96];
+    const chartBars = heights.map((h, i) => ({ h: h + '%', color: i === heights.length - 1 ? '#0066cc' : '#aecbf0', label: 'Day ' + (i + 1) }));
+
+    // donut
+    const donutGradient = 'conic-gradient(#0066cc 0% 46%, #6b4ed8 46% 64%, #28a745 64% 86%, #cdd6e0 86% 100%)';
+    const statusLegend = [
+      { color: '#0066cc', label: 'Generated', value: 144 },
+      { color: '#6b4ed8', label: 'Reviewed', value: 56 },
+      { color: '#28a745', label: 'Approved', value: 68 },
+      { color: '#cdd6e0', label: 'Draft / Archived', value: 44 },
+    ];
+
+    const recentSubs = this.submittalsData.slice(0, 6).map(s => ({
+      number: s.number, product: s.product, consultant: s.consultant, status: s.status, date: s.date,
+      badge: this.badgeFor(s.status), open: () => this.openDetail(s),
+    }));
+
+    // ---- documents ----
+    const documents = this.documentsData.map(d => ({
+      ...d, typeStyle: this.typeBadge(d.type),
+      preview: () => this.toast('Opening document preview…'),
+      download: () => this.toast('Downloading “' + d.name + '”'),
+      versions: () => this.toast('Loading version history…'),
+      remove: () => this.toast('Moved to trash'),
+    }));
+    const docTypeFilters = [
+      { label: 'All types', count: 1284, key: 'all' },
+      { label: 'Datasheets', count: 312, key: 'Datasheet' },
+      { label: 'Certificates', count: 188, key: 'Certificate' },
+      { label: 'Compliance docs', count: 264, key: 'Compliance' },
+      { label: 'Manuals', count: 142, key: 'Manual' },
+      { label: 'Catalogues', count: 96, key: 'Catalogue' },
+    ].map(f => ({ ...f, active: st.docFilter === f.key, style: `display:flex;align-items:center;justify-content:space-between;padding:8px 11px;border-radius:7px;font-size:13.5px;cursor:pointer;margin-bottom:2px;font-weight:${st.docFilter === f.key ? 600 : 500};color:${st.docFilter === f.key ? '#0066cc' : '#4a5563'};background:${st.docFilter === f.key ? '#e8f1fd' : 'transparent'};`, setF: () => this.setState({ docFilter: f.key }) }));
+    const visibleDocs = documents.filter(d => st.docFilter === 'all' || d.type === st.docFilter);
+
+    // ---- templates ----
+    const templates = this.templatesData.map(t => ({
+      ...t, typeStyle: this.typeBadge(t.type), statusStyle: this.badgeFor(t.status),
+      consultantDisplay: t.consultant === '—' ? 'Any consultant' : t.consultant,
+      edit: () => this.go('builder'),
+      duplicate: () => this.toast('Template duplicated'),
+      remove: () => this.toast('Template deleted'),
+    }));
+
+    // ---- builder ----
+    const bsec = st.builderSections || this.defaultBuilder;
+    const builderSections = bsec.map((s, i) => ({
+      ...s, index: i,
+      typeStyle: this.typeBadge(s.type === 'Company Info' ? 'Generic' : (s.type === 'Compliance' ? 'Compliance' : (s.type === 'Custom' ? 'Custom' : 'Datasheet'))),
+      mandatoryLabel: s.mandatory ? 'Required' : 'Optional',
+      mandatoryStyle: s.mandatory ? 'font-size:11px;font-weight:600;color:#c2620f;background:#fef0e6;padding:2px 8px;border-radius:5px;' : 'font-size:11px;font-weight:600;color:#6b7685;background:#eef0f3;padding:2px 8px;border-radius:5px;',
+      selected: i === st.selectedBuilder,
+      cardStyle: `display:flex;align-items:center;gap:14px;background:#fff;border:1.5px solid ${i === st.selectedBuilder ? '#0066cc' : '#e6eaef'};border-radius:10px;padding:14px 16px;cursor:pointer;transition:border-color .12s,box-shadow .12s;box-shadow:${i === st.selectedBuilder ? '0 0 0 3px rgba(0,102,204,.10)' : 'none'};`,
+      select: () => this.setState({ selectedBuilder: i }),
+      onDragStart: () => this.setState({ dragIndex: i }),
+      onDragOver: (e) => e.preventDefault(),
+      onDrop: (e) => { e.preventDefault(); this.reorder(st.dragIndex, i); },
+      removeSec: (e) => { e.stopPropagation(); this.removeSection(i); },
+    }));
+    const selSec = bsec[st.selectedBuilder] || bsec[0] || {};
+
+    // ---- wizard ----
+    const wizSteps = ['Template', 'Project info', 'Sections', 'Compliance', 'Review'];
+    const stepObjs = wizSteps.map((label, i) => {
+      const n = i + 1; const done = st.wizardStep > n; const cur = st.wizardStep === n;
+      return { num: n, label, done, cur,
+        circleStyle: `width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;${done ? 'background:#28a745;color:#fff;' : (cur ? 'background:#0066cc;color:#fff;' : 'background:#e6eaef;color:#9aa3ad;')}`,
+        labelStyle: `font-size:13px;font-weight:${cur ? 600 : 500};color:${cur ? '#1a1a1a' : (done ? '#1e7a32' : '#9aa3ad')};`,
+        lineStyle: `flex:1;height:2px;margin:0 8px;background:${done ? '#28a745' : '#e6eaef'};`,
+        showLine: i < wizSteps.length - 1,
+        checkOrNum: done ? this.I('check', { size: 16, sw: 3 }) : n,
+      };
+    });
+    const wizProducts = [
+      { name: 'AcoustiClad 50mm Panel', sku: 'ACL-050', cat: 'Facade Cladding' },
+      { name: 'ThermoBlock R8 Insulation', sku: 'TBR-008', cat: 'Insulation' },
+      { name: 'FireGuard FR Door Set', sku: 'FGD-FR1', cat: 'Fire Protection' },
+    ].map((p, i) => ({ ...p, sel: i === st.wizardProduct, style: `border:1.5px solid ${i === st.wizardProduct ? '#0066cc' : '#e6eaef'};border-radius:11px;padding:16px;cursor:pointer;background:${i === st.wizardProduct ? '#f4f9ff' : '#fff'};box-shadow:${i === st.wizardProduct ? '0 0 0 3px rgba(0,102,204,.10)' : 'none'};transition:all .12s;`, pick: () => this.setState({ wizardProduct: i }) }));
+    const wizTemplates = [
+      { name: 'Standard Facade Submittal', meta: 'Hassell Studio · 8 sections' },
+      { name: 'Facade — Generic Package', meta: 'Any consultant · 6 sections' },
+    ].map((t, i) => ({ ...t, sel: i === st.wizardTemplate, style: `border:1.5px solid ${i === st.wizardTemplate ? '#0066cc' : '#e6eaef'};border-radius:11px;padding:14px 16px;cursor:pointer;background:${i === st.wizardTemplate ? '#f4f9ff' : '#fff'};display:flex;align-items:center;gap:13px;box-shadow:${i === st.wizardTemplate ? '0 0 0 3px rgba(0,102,204,.10)' : 'none'};transition:all .12s;`, pick: () => this.setState({ wizardTemplate: i }) }));
+    const wizReviewSecs = bsec.map(s => ({ name: s.name, type: s.type, docs: s.docs, mandatory: s.mandatory, mandatoryStyle: s.mandatory ? 'font-size:11px;font-weight:600;color:#c2620f;background:#fef0e6;padding:2px 8px;border-radius:5px;' : 'font-size:11px;font-weight:600;color:#6b7685;background:#eef0f3;padding:2px 8px;border-radius:5px;', mandatoryLabel: s.mandatory ? 'Required' : 'Optional' }));
+    const availSecs = this.availableSections.map(a => ({
+      ...a, typeStyle: this.typeBadge(a.type === 'Compliance' ? 'Compliance' : (a.type === 'Custom' ? 'Custom' : 'Generic')),
+      add: () => this.addSection(a),
+    }));
+
+    // shared styles
+    const inputStyle = 'width:100%;height:44px;border:1px solid #d4dae1;border-radius:6px;padding:0 14px;font-size:14.5px;outline:none;transition:border-color .15s,box-shadow .15s;';
+    const primaryBtnFull = 'width:100%;height:46px;background:#0066cc;color:#fff;border:none;border-radius:7px;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:9px;transition:background .15s;';
+    const primaryBtn = 'height:40px;padding:0 16px;background:#0066cc;color:#fff;border:none;border-radius:8px;font-size:13.5px;font-weight:600;display:inline-flex;align-items:center;gap:7px;transition:background .15s;';
+    const secondaryBtn = 'height:40px;padding:0 16px;background:#fff;color:#374151;border:1px solid #d4dae1;border-radius:8px;font-size:13.5px;font-weight:600;display:inline-flex;align-items:center;gap:7px;transition:background .15s;';
+    const menuItemStyle = 'display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:7px;font-size:13.5px;font-weight:500;color:#374151;cursor:pointer;';
+    const thStyle = 'text-align:left;font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#9aa3ad;padding:11px 22px;';
+    const tdStyle = 'font-size:13.5px;color:#374151;padding:13px 22px;';
+
+    const sc = ['#dc3545', '#ff6b35', '#ffc107', '#28a745'];
+    const strengthColors = [1, 2, 3, 4].map(n => st.pwdStrength >= n ? sc[st.pwdStrength - 1] : '#e6eaef');
+    const strengthLabels = ['Too weak', 'Weak', 'Fair', 'Good', 'Strong'];
+
+    // checkbox visual
+    const checkboxStyle = `width:18px;height:18px;border-radius:5px;border:1.5px solid ${st.remember ? '#0066cc' : '#c4cdd8'};background:${st.remember ? '#0066cc' : '#fff'};display:inline-flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;flex-shrink:0;`;
+
+    return {
+      // auth
+      showAuth: !st.loggedIn,
+      isLogin: st.authView === 'login',
+      isRegister: st.authView === 'register',
+      isReset: st.authView === 'reset',
+      resetSent: st.resetSent,
+      resetNotSent: !st.resetSent,
+      authError: st.authError,
+      authLoading: st.authLoading,
+      loginBtnLabel: st.authLoading ? 'Signing in...' : 'Sign in',
+      pwdType: st.showPwd ? 'text' : 'password',
+      goLogin: () => this.setState({ authView: 'login', resetSent: false }),
+      goRegister: () => this.setState({ authView: 'register' }),
+      goReset: () => this.setState({ authView: 'reset', resetSent: false }),
+      doLogin: this.doLogin,
+      doReset: this.doReset,
+      togglePwd: () => this.setState({ showPwd: !st.showPwd }),
+      toggleRemember: () => this.setState({ remember: !st.remember }),
+      onPwdInput: this.onPwdInput,
+      iconMail: I('mail'), iconLock: I('lock'), iconEye: I('eye'), iconCheckCircle: I('checkCircle', { size: 18 }),
+      checkMark: st.remember ? I('check', { size: 13, sw: 3 }) : '',
+      strengthC1: strengthColors[0], strengthC2: strengthColors[1], strengthC3: strengthColors[2], strengthC4: strengthColors[3],
+      strengthLabel: strengthLabels[st.pwdStrength],
+
+      // shell
+      loggedIn: st.loggedIn,
+      navItems,
+      userMenuOpen: st.userMenuOpen,
+      toggleUserMenu: () => this.setState({ userMenuOpen: !st.userMenuOpen }),
+      goProfile: () => this.go('profile'),
+      doLogout: this.doLogout,
+      openWizard: () => this.setState({ route: 'wizard', wizardStep: 1, genResult: null, userMenuOpen: false }),
+      goDocuments: () => this.go('documents'),
+      goSubmittals: () => this.go('submittals'),
+      toast: st.toast,
+
+      // icons for shell
+      iconSearch: I('search'), iconBell: I('bell'), iconChevron: I('chevron', { size: 16 }), iconChevronR: I('chevronR', { size: 16 }),
+      iconPlus: I('plus', { size: 17 }), iconUpload: I('upload', { size: 16 }), iconUser: I('user', { size: 16 }),
+      iconSettings: I('settings', { size: 16 }), iconLogout: I('logout', { size: 16 }),
+
+      // routes
+      isDashboard: route === 'dashboard',
+      isDocuments: route === 'documents',
+      isTemplates: route === 'templates',
+      isBuilder: route === 'builder',
+      isSubmittals: route === 'submittals',
+      isWizard: route === 'wizard',
+      isProfile: route === 'profile',
+
+      // dashboard
+      kpis, chartBars, donutGradient, statusLegend, recentSubs,
+
+      // documents
+      documents: visibleDocs, docTypeFilters,
+      docCount: visibleDocs.length,
+      isDocList: st.docView === 'list', isDocGrid: st.docView === 'grid',
+      setDocList: () => this.setState({ docView: 'list' }),
+      setDocGrid: () => this.setState({ docView: 'grid' }),
+      listToggleStyle: (on) => `width:36px;height:32px;display:flex;align-items:center;justify-content:center;border:none;border-radius:6px;cursor:pointer;color:${on ? '#0066cc' : '#9aa3ad'};background:${on ? '#fff' : 'transparent'};box-shadow:${on ? '0 1px 2px rgba(0,0,0,.08)' : 'none'};`,
+      listBtnStyle: st.docView === 'list' ? `width:36px;height:32px;display:flex;align-items:center;justify-content:center;border:none;border-radius:6px;cursor:pointer;color:#0066cc;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.08);` : `width:36px;height:32px;display:flex;align-items:center;justify-content:center;border:none;border-radius:6px;cursor:pointer;color:#9aa3ad;background:transparent;`,
+      gridBtnStyle: st.docView === 'grid' ? `width:36px;height:32px;display:flex;align-items:center;justify-content:center;border:none;border-radius:6px;cursor:pointer;color:#0066cc;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.08);` : `width:36px;height:32px;display:flex;align-items:center;justify-content:center;border:none;border-radius:6px;cursor:pointer;color:#9aa3ad;background:transparent;`,
+      openUpload: () => this.setState({ uploadOpen: true, uploadStage: 'idle' }),
+      closeUpload: () => this.setState({ uploadOpen: false }),
+      uploadOpen: st.uploadOpen,
+      uploadIdle: st.uploadStage === 'idle',
+      uploadSelected: st.uploadStage === 'selected',
+      uploadDone: st.uploadStage === 'done',
+      uploadNotDone: st.uploadStage !== 'done',
+      pickFile: () => this.setState({ uploadStage: 'selected' }),
+      submitUpload: () => {
+        this.setState({ uploadStage: 'uploading' });
+        setTimeout(() => this.setState({ uploadStage: 'done' }), 1100);
+        setTimeout(() => { this.setState({ uploadOpen: false }); this.toast('Document uploaded to library'); }, 2100);
+      },
+      uploadBtnLabel: st.uploadStage === 'uploading' ? 'Uploading…' : (st.uploadStage === 'done' ? 'Uploaded' : 'Upload document'),
+      uploading: st.uploadStage === 'uploading',
+      iconEye: I('eye2', { size: 16 }), iconDownload: I('download', { size: 16 }), iconHistory: I('history', { size: 16 }),
+      iconTrash: I('trash', { size: 16 }), iconDots: I('dots', { size: 16 }), iconFilter: I('filter', { size: 15 }),
+      iconList: I('stack', { size: 17 }), iconGrid: I('grid', { size: 16 }), iconDoc: I('doc', { size: 22 }),
+      iconX: I('x', { size: 18 }), iconCheck: I('check', { size: 26, sw: 3 }), iconUploadLg: I('upload', { size: 30 }),
+
+      // templates + builder
+      templates, templateCount: templates.length,
+      builderSections, availSecs,
+      iconEdit: I('edit', { size: 16 }), iconCopy: I('copy', { size: 16 }), iconDrag: I('drag', { size: 18 }),
+      iconLayersLg: I('layers', { size: 22 }), iconBack: I('chevron', { size: 18 }),
+      goTemplates: () => this.go('templates'),
+      openBuilder: () => this.go('builder'),
+      saveTemplate: () => { this.toast('Template saved'); this.go('templates'); },
+      selName: selSec.name || '', selType: selSec.type || '', selDocs: (selSec.docs || 0) + ' documents linked',
+      selMandatory: !!selSec.mandatory,
+      selMandatoryStyle: `width:42px;height:24px;border-radius:13px;padding:2px;cursor:pointer;display:flex;background:${selSec.mandatory ? '#0066cc' : '#cdd6e0'};justify-content:${selSec.mandatory ? 'flex-end' : 'flex-start'};transition:background .15s;`,
+      toggleMandatory: () => { const arr = (st.builderSections || this.defaultBuilder).slice(); if (arr[st.selectedBuilder]) { arr[st.selectedBuilder] = { ...arr[st.selectedBuilder], mandatory: !arr[st.selectedBuilder].mandatory }; this.setState({ builderSections: arr }); } },
+
+      // wizard
+      isWizardStep1: st.wizardStep === 1, isWizardStep2: st.wizardStep === 2, isWizardStep3: st.wizardStep === 3,
+      isWizardStep4: st.wizardStep === 4, isWizardStep5: st.wizardStep === 5,
+      wizardActive: !st.genResult, wizardResult: st.genResult,
+      stepObjs, wizProducts, wizTemplates, wizReviewSecs,
+      wizStepNum: st.wizardStep, wizTotal: 5,
+      wizCanBack: st.wizardStep > 1,
+      wizNextLabel: st.wizardStep === 5 ? 'Generate Submittal' : 'Continue',
+      wizGenerating: st.wizardGenerating,
+      wizNext: () => {
+        if (st.wizardStep < 5) { this.setState({ wizardStep: st.wizardStep + 1 }); window.scrollTo(0, 0); }
+        else {
+          this.setState({ wizardGenerating: true });
+          setTimeout(() => this.setState({ wizardGenerating: false, genResult: { number: 'SUB-2026-0148', pages: 44, size: '8.2 MB', time: '5.4s' } }), 1600);
+        }
+      },
+      wizBack: () => { if (st.wizardStep > 1) this.setState({ wizardStep: st.wizardStep - 1 }); },
+      wizCancel: () => this.go('dashboard'),
+      wizComplianceYes: st.wizardCompliance,
+      setComplianceYes: () => this.setState({ wizardCompliance: true }),
+      setComplianceNo: () => this.setState({ wizardCompliance: false }),
+      complianceSummary: st.wizardCompliance ? 'AI compliance statements enabled' : 'No compliance statements',
+      genDownload: () => this.toast('Downloading submittal PDF…'),
+      genAnother: () => this.setState({ route: 'wizard', wizardStep: 1, genResult: null }),
+      genViewDetail: () => { this.setState({ genResult: null }); this.openDetail(this.submittalsData[0]); this.go('submittals'); },
+      compYesStyle: `flex:1;border:1.5px solid ${st.wizardCompliance ? '#0066cc' : '#e6eaef'};border-radius:11px;padding:18px;cursor:pointer;background:${st.wizardCompliance ? '#f4f9ff' : '#fff'};transition:all .12s;`,
+      compNoStyle: `flex:1;border:1.5px solid ${!st.wizardCompliance ? '#0066cc' : '#e6eaef'};border-radius:11px;padding:18px;cursor:pointer;background:${!st.wizardCompliance ? '#f4f9ff' : '#fff'};transition:all .12s;`,
+      iconSparkle: I('sparkle', { size: 22 }), iconClock: I('clock', { size: 18 }), iconShield: I('shield', { size: 22 }),
+      iconCheckLg: I('check', { size: 34, sw: 3 }), iconFileLg: I('file', { size: 20 }),
+      selProductName: wizProducts[st.wizardProduct].name, selTemplateName: wizTemplates[st.wizardTemplate].name,
+
+      // submittals list
+      allSubmittals: this.submittalsData.map(s => ({ ...s, badge: this.badgeFor(s.status), open: () => this.openDetail(s), download: (e) => { if (e) e.stopPropagation(); this.toast('Downloading ' + s.number); } })),
+      iconChevronR2: I('chevronR', { size: 16 }),
+
+      // detail panel
+      detailOpen: st.detailOpen,
+      detail: st.detail || {},
+      detailBadge: st.detail ? this.badgeFor(st.detail.status) : '',
+      closeDetail: () => this.setState({ detailOpen: false }),
+      detailTabOverview: st.detailTab === 'overview', detailTabFiles: st.detailTab === 'files',
+      detailTabCompliance: st.detailTab === 'compliance', detailTabAudit: st.detailTab === 'audit',
+      tabOverview: () => this.setState({ detailTab: 'overview' }),
+      tabFiles: () => this.setState({ detailTab: 'files' }),
+      tabCompliance: () => this.setState({ detailTab: 'compliance' }),
+      tabAudit: () => this.setState({ detailTab: 'audit' }),
+      tabOverviewStyle: this.detailTabStyle('overview'), tabFilesStyle: this.detailTabStyle('files'),
+      tabComplianceStyle: this.detailTabStyle('compliance'), tabAuditStyle: this.detailTabStyle('audit'),
+      overviewRows: [
+        { k: 'Submittal number', v: st.detail ? st.detail.number : '' },
+        { k: 'Product', v: st.detail ? st.detail.product : '' },
+        { k: 'Consultant', v: st.detail ? st.detail.consultant : '' },
+        { k: 'Project', v: st.detail ? st.detail.project : '' },
+        { k: 'Pages', v: st.detail ? st.detail.pages : '' },
+        { k: 'Generated by', v: 'Sarah Chen' },
+        { k: 'Generated on', v: st.detail ? st.detail.date : '' },
+      ],
+      complianceItems: [
+        { req: 'Acoustic performance — Rw ≥ 45 dB per ISO 717-1', text: 'AcoustiClad 50mm achieves Rw 48 dB tested to ISO 717-1, exceeding the specified minimum.', score: 96, scoreColor: '#28a745', scoreBg: '#eaf6ec' },
+        { req: 'Reaction to fire — Euroclass B-s1,d0 minimum', text: 'Panel core is classified A2-s1,d0 to EN 13501-1, surpassing the Euroclass B requirement.', score: 91, scoreColor: '#28a745', scoreBg: '#eaf6ec' },
+        { req: 'Weathering — 25-year facade durability', text: 'PVDF coating warranted for 25 years; cite manufacturer warranty document for confirmation.', score: 74, scoreColor: '#c2620f', scoreBg: '#fef0e6' },
+      ],
+      auditItems: [
+        { action: 'Submittal approved', who: 'M. Reyes (Reviewer)', when: 'Jun 26, 2026 · 4:12 PM', color: '#28a745' },
+        { action: 'Compliance statements reviewed', who: 'Sarah Chen', when: 'Jun 26, 2026 · 2:48 PM', color: '#6b4ed8' },
+        { action: 'Submittal generated', who: 'Sarah Chen', when: 'Jun 26, 2026 · 2:30 PM', color: '#0066cc' },
+        { action: 'Submittal created', who: 'Sarah Chen', when: 'Jun 26, 2026 · 2:24 PM', color: '#9aa3ad' },
+      ],
+      detailFiles: [
+        { name: 'SUB-2026-0147 — Full Package.pdf', meta: '44 pages · 8.2 MB', type: 'Datasheet' },
+        { name: 'AcoustiClad 50mm — Datasheet.pdf', meta: '6 pages · 2.4 MB', type: 'Datasheet' },
+        { name: 'Fire Test Report EN 1634.pdf', meta: '12 pages · 5.1 MB', type: 'Compliance' },
+        { name: 'ISO 9001:2015 Certificate.pdf', meta: '1 page · 480 KB', type: 'Certificate' },
+      ].map(f => ({ ...f, typeStyle: this.typeBadge(f.type), download: () => this.toast('Downloading ' + f.name) })),
+
+      // profile
+      profileTabs: [
+        { key: 'profile', label: 'Profile' }, { key: 'security', label: 'Security' },
+        { key: 'prefs', label: 'Preferences' }, { key: 'notif', label: 'Notifications' },
+      ].map(t => ({ label: t.label, set: () => this.setState({ profileTab: t.key }), style: `padding:0 2px 14px;font-size:14px;font-weight:600;cursor:pointer;color:${st.profileTab === t.key ? '#0066cc' : '#8a94a2'};border-bottom:2px solid ${st.profileTab === t.key ? '#0066cc' : 'transparent'};margin-bottom:-1px;` })),
+      profTabProfile: st.profileTab === 'profile', profTabSecurity: st.profileTab === 'security',
+      profTabPrefs: st.profileTab === 'prefs', profTabNotif: st.profileTab === 'notif',
+      saveProfile: () => this.toast('Profile updated'),
+      savePassword: () => this.toast('Password updated'),
+      prefRows: [
+        { key: 'darkSidebar', label: 'Compact sidebar', desc: 'Use a denser navigation layout' },
+        { key: 'rememberFilters', label: 'Remember filters', desc: 'Keep table filters between sessions' },
+        { key: 'gridDefault', label: 'Default to grid view', desc: 'Open documents in grid layout' },
+      ].map(p => this.toggleRow(p)),
+      notifRows: [
+        { key: 'emailGen', label: 'Submittal generated', desc: 'Email me when a submittal is generated' },
+        { key: 'emailReview', label: 'Compliance review needed', desc: 'Notify me of pending compliance reviews' },
+        { key: 'weeklyDigest', label: 'Weekly digest', desc: 'A summary of workspace activity each Monday' },
+        { key: 'securityAlerts', label: 'Security alerts', desc: 'Sign-ins from new devices' },
+      ].map(p => this.toggleRow(p)),
+
+      // styles
+      inputStyle, primaryBtnFull, primaryBtn, secondaryBtn, menuItemStyle, thStyle, tdStyle, checkboxStyle,
+      iconBtnStyle: 'width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;border-radius:7px;color:#8a94a2;cursor:pointer;transition:background .12s,color .12s;',
+      selectStyle: 'width:100%;height:42px;border:1px solid #d4dae1;border-radius:7px;padding:0 12px;font-size:14px;outline:none;background:#fff;color:#374151;',
+    };
+  }
+
+  openDetail(s) { this.setState({ detail: s, detailOpen: true, detailTab: 'overview' }); }
+
+  reorder(from, to) {
+    if (from == null || from === to) return;
+    const arr = (this.state.builderSections || this.defaultBuilder).slice();
+    const [m] = arr.splice(from, 1);
+    arr.splice(to, 0, m);
+    this.setState({ builderSections: arr, dragIndex: null, selectedBuilder: to });
+  }
+  removeSection(i) {
+    const arr = (this.state.builderSections || this.defaultBuilder).slice();
+    arr.splice(i, 1);
+    this.setState({ builderSections: arr, selectedBuilder: 0 });
+    this.toast('Section removed');
+  }
+  detailTabStyle(tab) {
+    const on = this.state.detailTab === tab;
+    return `padding:13px 2px;font-size:13.5px;font-weight:600;cursor:pointer;color:${on ? '#0066cc' : '#8a94a2'};border-bottom:2px solid ${on ? '#0066cc' : 'transparent'};margin-bottom:-1px;`;
+  }
+  toggleRow(p) {
+    const on = !!this.state.toggles[p.key];
+    return {
+      label: p.label, desc: p.desc,
+      toggleStyle: `width:42px;height:24px;border-radius:13px;padding:2px;cursor:pointer;display:flex;background:${on ? '#0066cc' : '#cdd6e0'};justify-content:${on ? 'flex-end' : 'flex-start'};transition:background .15s;flex-shrink:0;`,
+      toggle: () => this.setState(s => ({ toggles: { ...s.toggles, [p.key]: !s.toggles[p.key] } })),
+    };
+  }
+  addSection(a) {
+    const arr = (this.state.builderSections || this.defaultBuilder).slice();
+    arr.push({ id: a.id + Date.now(), name: a.name, type: a.type, docs: 1, mandatory: false });
+    this.setState({ builderSections: arr, selectedBuilder: arr.length - 1 });
+    this.toast('Section added to template');
+  }
+}
+</script>
+</body>
+</html>

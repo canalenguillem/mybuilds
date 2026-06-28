@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+frontend/dist/
+frontend/build/
+npm-debug.log*
+
+# Env / secrets
+.env
+.env.local
+.env.production
+*.pem
+!nginx/ssl/.gitkeep
+
+# Data volumes (runtime state, never commit)
+volumes/mariadb/
+volumes/mongodb/
+volumes/redis/
+volumes/documents/
+volumes/generated_pdfs/
+volumes/backups/
+volumes/n8n/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store

@@ -44,6 +44,23 @@ def generate(
     )
 
 
+@router.post("/{submittal_id}/regenerate", response_model=GenerateResponse, status_code=status.HTTP_202_ACCEPTED)
+def regenerate(
+    submittal_id: int, db: Session = Depends(get_db), user: User = Depends(writer)
+) -> GenerateResponse:
+    """Re-run PDF assembly for an existing submittal (e.g. after approving
+    compliance statements so they're included in the compliance section)."""
+    submittal = SubmittalService(db).mark_regenerating(submittal_id, user.id)
+    task = generate_submittal.delay(submittal.id)
+    return GenerateResponse(
+        task_id=task.id,
+        submittal_id=submittal.id,
+        message="Submittal regeneration started",
+        estimated_time_seconds=30,
+        status_url=f"{settings.api_v1_prefix}/submittals/tasks/{task.id}",
+    )
+
+
 @router.get("/tasks/{task_id}", response_model=TaskStatusResponse)
 def task_status(task_id: str, _: User = Depends(get_current_user)) -> TaskStatusResponse:
     res = AsyncResult(task_id, app=celery_app)

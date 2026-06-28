@@ -12,6 +12,7 @@ from pypdf import PdfReader, PdfWriter
 from reportlab.lib.colors import HexColor
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
+from reportlab.lib.utils import simpleSplit
 from reportlab.pdfgen import canvas
 
 PAGE_W, PAGE_H = A4
@@ -24,6 +25,7 @@ class SectionSpec:
     name: str
     section_type: str
     doc_paths: list[str] = field(default_factory=list)
+    statements: list[str] = field(default_factory=list)  # approved compliance statements
 
 
 @dataclass
@@ -107,6 +109,44 @@ def _placeholder_page(name: str, section_type: str) -> bytes:
     return out.getvalue()
 
 
+def _statements_pages(name: str, statements: list[str], primary) -> bytes:
+    """Render approved compliance statements as one or more A4 pages."""
+    out = BytesIO()
+    c = canvas.Canvas(out, pagesize=A4)
+    left = 25 * mm
+    right = PAGE_W - 25 * mm
+    top = PAGE_H - 30 * mm
+    bottom = 25 * mm
+
+    def header():
+        c.setFillColor(primary)
+        c.setFont("Helvetica-Bold", 18)
+        c.drawString(left, PAGE_H - 24 * mm, name)
+        c.setStrokeColor(HexColor("#e6eaef"))
+        c.line(left, PAGE_H - 28 * mm, right, PAGE_H - 28 * mm)
+
+    header()
+    y = top - 6 * mm
+    for i, text in enumerate(statements, start=1):
+        block = f"{i}.  {text}"
+        lines = simpleSplit(block, "Helvetica", 11, right - left)
+        # Page break if the statement won't fit.
+        if y - len(lines) * 6 * mm < bottom:
+            c.showPage()
+            header()
+            y = top - 6 * mm
+        c.setFillColor(HexColor("#374151"))
+        c.setFont("Helvetica", 11)
+        for line in lines:
+            c.drawString(left, y, line)
+            y -= 6 * mm
+        y -= 4 * mm  # gap between statements
+    c.showPage()
+    c.save()
+    out.seek(0)
+    return out.getvalue()
+
+
 def _front_matter(*, title, project_name, consultant_id, submission_number,
                   toc_entries, primary) -> bytes:
     out = BytesIO()
@@ -167,6 +207,11 @@ def build_submittal(
                     added = True
                 except Exception:  # noqa: BLE001 — skip unreadable PDFs gracefully
                     continue
+        # Render approved compliance statements (dynamic sections) after any docs.
+        if sec.statements:
+            for page in PdfReader(BytesIO(_statements_pages(sec.name, sec.statements, primary))).pages:
+                content.add_page(page)
+            added = True
         if not added:
             for page in PdfReader(BytesIO(_placeholder_page(sec.name, sec.section_type))).pages:
                 content.add_page(page)

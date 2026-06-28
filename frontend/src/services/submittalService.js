@@ -13,6 +13,10 @@ export const submittalService = {
     const { data } = await api.post('/submittals/generate', payload)
     return data
   },
+  async regenerate(id) {
+    const { data } = await api.post(`/submittals/${id}/regenerate`)
+    return data
+  },
   async taskStatus(taskId) {
     const { data } = await api.get(`/submittals/tasks/${taskId}`)
     return data

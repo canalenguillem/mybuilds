@@ -8,6 +8,7 @@ from sqlalchemy import extract, func, select
 from sqlalchemy.orm import Session
 
 from app.config import settings
+from app.database.models.compliance import ComplianceStatement
 from app.database.models.documents import Document
 from app.database.models.submittals import Submittal, SubmittalAudit
 from app.database.models.templates import Template
@@ -66,6 +67,16 @@ class SubmittalService:
         self.db.refresh(submittal)
         return submittal
 
+    def mark_regenerating(self, submittal_id: int, user_id: int) -> Submittal:
+        s = self.get_or_404(submittal_id)
+        s.status = "generating"
+        self.db.add(
+            SubmittalAudit(submittal_id=s.id, action="regenerated", actor_id=user_id)
+        )
+        self.db.commit()
+        self.db.refresh(s)
+        return s
+
     def _next_number(self) -> str:
         year = datetime.now(timezone.utc).year
         count = self.db.scalar(
@@ -89,14 +100,27 @@ class SubmittalService:
             for d in self.db.scalars(select(Document).where(Document.id.in_(all_ids)))
         } if all_ids else {}
 
-        specs = [
-            SectionSpec(
-                name=s.section_name,
-                section_type=s.section_type or "static_document",
-                doc_paths=[paths[d] for d in (s.document_ids or []) if d in paths],
+        # Approved compliance statements linked to this submittal, for dynamic sections.
+        approved_statements = self.db.scalars(
+            select(ComplianceStatement.statement).where(
+                ComplianceStatement.submittal_id == submittal.id,
+                ComplianceStatement.review_status == "approved",
             )
-            for s in sorted(template.sections, key=lambda s: s.section_order)
-        ]
+        ).all()
+
+        specs = []
+        for s in sorted(template.sections, key=lambda s: s.section_order):
+            section_type = s.section_type or "static_document"
+            specs.append(
+                SectionSpec(
+                    name=s.section_name,
+                    section_type=section_type,
+                    doc_paths=[paths[d] for d in (s.document_ids or []) if d in paths],
+                    statements=list(approved_statements)
+                    if section_type == "dynamic_compliance"
+                    else [],
+                )
+            )
 
         output_path = os.path.join(
             settings.generated_pdfs_path, f"{submittal.submission_number}.pdf"

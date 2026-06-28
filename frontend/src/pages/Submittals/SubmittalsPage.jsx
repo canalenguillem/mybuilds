@@ -121,11 +121,35 @@ export default function SubmittalsPage() {
   }
   useEffect(load, [])
 
+  const [busyId, setBusyId] = useState(null)
+
   const onDone = () => { setShowGen(false); load() }
 
   const download = async (s) => {
     try { await submittalService.download(s.id, s.submission_number) }
     catch (e) { setError(apiError(e, 'Download failed.')) }
+  }
+
+  const regenerate = async (s) => {
+    setBusyId(s.id)
+    setError('')
+    try {
+      const res = await submittalService.regenerate(s.id)
+      // Poll the task to completion, then refresh the list.
+      const poll = async () => {
+        const st = await submittalService.taskStatus(res.task_id)
+        if (st.status === 'completed' || st.status === 'failed') {
+          setBusyId(null)
+          load()
+        } else {
+          setTimeout(poll, 1200)
+        }
+      }
+      poll()
+    } catch (e) {
+      setBusyId(null)
+      setError(apiError(e, 'Regeneration failed.'))
+    }
   }
 
   return (
@@ -163,10 +187,19 @@ export default function SubmittalsPage() {
                     <td><span className="badge" style={{ background: st.bg, color: st.color }}>{st.label}</span></td>
                     <td>{s.page_count ?? '—'}</td>
                     <td style={{ color: 'var(--text-muted)' }}>{new Date(s.created_at).toLocaleDateString()}</td>
-                    <td style={{ textAlign: 'right' }}>
+                    <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
                       <button
                         className="btn btn-secondary"
-                        style={{ height: 32, padding: '0 14px' }}
+                        style={{ height: 32, padding: '0 12px' }}
+                        disabled={busyId === s.id || s.status === 'generating'}
+                        onClick={() => regenerate(s)}
+                        title="Re-assemble the PDF (includes approved compliance statements)"
+                      >
+                        {busyId === s.id ? 'Regenerating…' : 'Regenerate'}
+                      </button>
+                      <button
+                        className="btn btn-secondary"
+                        style={{ height: 32, padding: '0 12px', marginLeft: 8 }}
                         disabled={s.status !== 'generated'}
                         onClick={() => download(s)}
                       >

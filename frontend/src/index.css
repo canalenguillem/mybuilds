@@ -436,6 +436,26 @@ h1 {
   }
 }
 
+/* ── Generate form grid + progress ─────────────────────────── */
+.gen-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0 16px;
+  margin: 16px 0 8px;
+}
+.progress-bar {
+  height: 8px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
 /* ── Spinner ───────────────────────────────────────────────── */
 .spinner {
   width: 16px;

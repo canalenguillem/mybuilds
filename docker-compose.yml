@@ -96,6 +96,7 @@ services:
     command: celery -A app.tasks.celery_app worker --loglevel=info --concurrency=4
     volumes:
       - ./backend/app:/app/app
+      - ./volumes/documents:/app/data/documents
       - ./volumes/generated_pdfs:/app/data/generated_pdfs
     env_file: [.env]
     environment:

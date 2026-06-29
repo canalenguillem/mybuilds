@@ -123,9 +123,11 @@ services:
       - ./frontend/src:/app/src
       - ./frontend/public:/app/public
       - ./frontend/index.html:/app/index.html
+      - ./frontend/vite.config.js:/app/vite.config.js
       - /app/node_modules
     environment:
       VITE_API_URL: ${VITE_API_URL:-http://localhost:8100/api/v1}
+      VITE_ALLOWED_HOSTS: ${VITE_ALLOWED_HOSTS:-}
       VITE_APP_NAME: ${VITE_APP_NAME:-myBuilds}
     depends_on:
       backend:

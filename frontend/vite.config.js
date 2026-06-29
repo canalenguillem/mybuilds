@@ -18,5 +18,13 @@ export default defineConfig({
     port: 3000,
     watch: { usePolling: true }, // reliable hot-reload inside Docker
     allowedHosts,
+    // Proxy API calls to the backend so a relative VITE_API_URL (/api/v1)
+    // works both behind nginx and when hitting the dev server directly.
+    proxy: {
+      '/api': {
+        target: process.env.VITE_PROXY_TARGET || 'http://backend:8000',
+        changeOrigin: true,
+      },
+    },
   },
 })
